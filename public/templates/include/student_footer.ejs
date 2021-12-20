@@ -1,0 +1,22 @@
+<!-- Main footer for Application -->
+<footer>
+    <div class="row ml-3" style="margin-top: 1%;">
+       <div class="col-lg-8">
+            <input id="search" class="form-control form-control-lg mx-3" role="search" placeholder="Procura...">
+       </div>
+       <div class="col-lg-4 d-flex justify-content-end">
+            <div class="btn-group dropup mx-3 mr-5">
+                <button type="button" class="btn btn-lg btn-primary" data-bs-toggle="dropdown" aria-expanded="false">
+                    <%= json_student[0].name %>
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="/studentProfile">Perfil <i class="bi bi-person"></i></i></a></li>
+                    <hr style="border: 0.02rem solid">
+                    <li><a href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout <i class="bi bi-door-open"></i></a></li>
+                </ul>
+            </div>
+       </div> 
+    </div>
+
+</footer>
