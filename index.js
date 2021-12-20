@@ -31,17 +31,17 @@ app.use(cors({
 
 // ===========================================================================================================================
 // ===========================================================================================================================
-// Diretorio das views
+// Diretorio das Views
 app.set('views', path.join(__dirname, '/public/templates'))
 
 app.set('view engine', 'ejs')
 
-app.use('/', routes) // Rotas da Aplicacao
+app.use('/', routes) // Application Routes
 
 
 // ===========================================================================================================================
 // ===========================================================================================================================
-// Server Listenin on Port 8080
+// Server Listening on Port 8080
 const PORT = 8080 // Porta onde o servidor vai escutar os pedidos e executar os requests
 app.listen(PORT, () => {
     console.log(`Server Running - PORT ${PORT}`)
