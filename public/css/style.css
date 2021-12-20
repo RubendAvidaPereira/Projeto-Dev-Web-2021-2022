@@ -134,15 +134,13 @@ body {
 /* CARDS */
 
 .card {
-    /* Position and Size */
-    position: relative;
-
     /* Other Styles */
     border-radius: 16px !important;
     border: 0px !important;
     transition: transform 1s;
     transform-style: preserve-3d;
 }
+
 .card-body {
 
     /* Colors */
@@ -157,29 +155,6 @@ body {
     background-color: #ffffff !important;
     color: #0c2d48;
     border-left: 4px solid #155b94;
-}
-.card-front {
-    /* Colors */
-    border-radius: 16px;
-    background: #155b94 !important;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.171) !important;
-    backface-visibility: hidden;
-}
-.card-back {
-    /* Colors */
-    border-radius: 16px;
-    background: #155b94 !important;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.171) !important;
-    transform: rotateY( 180deg );
-}
-.card-body {
-    /* Other Styles */
-    position: absolute;
-    backface-visibility: hidden;
-}
-.card.is-flipped {
-    /* Other Styles */
-    transform: rotateY( 180deg )
 }
 
 .form-control {
