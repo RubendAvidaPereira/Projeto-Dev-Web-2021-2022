@@ -27,7 +27,7 @@
                             <div class="row mt-2 mb-3 mx-2 d-flex justify-content-start">
                                 <div class="col-2 mx-1 d-flex justify-content-start">
                                     <div class="form-check form-switch form-check-inline">
-                                        <input class="form-check-input" type="radio" value="student" name="role" id="studenteRole" checked>
+                                        <input class="form-check-input login" type="radio" value="student" name="role" id="studenteRole" checked>
                                         <label class="form-check-label text" for="studenteRole">
                                             Estudante
                                         </label>
@@ -35,7 +35,7 @@
                                 </div>
                                 <div class="col-3 mx-5 d-flex justify-content-start">
                                     <div class="form-check form-switch form-check-inline">
-                                        <input class="form-check-input" type="radio" value="professor" name="role" id="professorRole">
+                                        <input class="form-check-input login" type="radio" value="professor" name="role" id="professorRole">
                                         <label class="form-check-label text" for="professorRole">
                                             Professor
                                         </label>
@@ -96,7 +96,7 @@
                                 </div>
                                 <div class="col-2 mx-4 d-flex justify-content-start">
                                     <div class="form-check form-switch form-check-inline">
-                                        <input class="form-check-input" type="radio" value="student" name="role" id="studenteRole" checked>
+                                        <input class="form-check-input register" type="radio" value="student" name="role" id="studenteRole" checked>
                                         <label class="form-check-label text" for="studenteRole">
                                             Estudante
                                         </label>
@@ -104,7 +104,7 @@
                                 </div>
                                 <div class="col-3 mx-5 d-flex justify-content-start">
                                     <div class="form-check form-switch form-check-inline">
-                                        <input class="form-check-input" type="radio" value="professor" name="role" id="professorRole">
+                                        <input class="form-check-input register" type="radio" value="professor" name="role" id="professorRole">
                                         <label class="form-check-label text" for="professorRole">
                                             Professor
                                         </label>
@@ -197,7 +197,7 @@
     registerButton.addEventListener("click", () => {
         let nameRegister = document.getElementById("nameRegister").value
         let usernameRegister = document.getElementById("usernameRegister").value
-        let radios = document.getElementsByClassName("form-check-input")
+        let radios = document.getElementsByClassName("register")
         let email = document.getElementById("emailRegister").value
         let password = document.getElementById("passwordRegister").value
 
@@ -291,7 +291,7 @@
     let loginForm = document.getElementById("loginButton")
     let loginWarning = document.getElementById("fillAll")
     let passwordWarning = document.getElementById("notExists")
-    let radios = document.getElementsByClassName("form-check-input")
+    let radios = document.getElementsByClassName("login")
 
     loginForm.addEventListener('click', () => {
         let email = document.getElementById("emailLogin").value

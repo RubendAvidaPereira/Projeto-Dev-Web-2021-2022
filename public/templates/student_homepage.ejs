@@ -34,6 +34,7 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Course Classes and General Info -->
                         <div class="row mx-0" style="margin-top: 3%;">
                             <div class="col-lg-12">
                                 <div id="plus-info" style="display: none;">
@@ -60,57 +61,53 @@
 
                     <div class="col-lg-3 mt-4 mx-2 mb-3">
                         <h4 class="text-center heading mx-2"><strong>Disciplinas Inscrito</strong></h4>
-                        <% for(var i=0; i<num_enrollements; i++) { %>
-                            <div class="card shadow ml-3 mr-0 mt-4">
-                                <div class="card-body w-100">
-                                    <h5>
-                                        <strong>
-                                            <%= json_courses[i][0].type %>
-                                        </strong>
-                                    </h5>
-                                    <div class="d-flex justify-content-end">
-                                        <button class="btn btn-primary" type="button"
-                                            id="btnCourse<%= json_courses[i][0].id %>">Ver +</button>
+                        <% if(num_enrollements == 0) { %>
+                            <h3 class="text-center heading mt-4 mx-2"><strong>Não está inscrito em disciplinas!</strong></h3>
+                        <% } else { %> 
+                            <% for(var i=0; i<num_enrollements; i++) { %>
+                                <div class="card shadow ml-3 mr-0 mt-4">
+                                    <div class="card-body w-100">
+                                        <h5>
+                                            <strong>
+                                                <%= json_courses[i][0].type %>
+                                            </strong>
+                                        </h5>
+                                        <div class="d-flex justify-content-end">
+                                            <button class="btn btn-primary" type="button"
+                                                id="btnCourse<%= json_courses[i][0].id %>">Ver +</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <script>
-                                document.getElementById("btnCourse<%= json_courses[i][0].id %>").addEventListener("click", (event) => {
-                                    let classes = document.getElementById("classes")
-                                    let courseHeader = document.getElementById("courseHeader")
-                                    let professorName = document.getElementById("professorName")
-                                    courseHeader.innerHTML = '<strong><%= json_courses[i][0].type %></strong>'
-                                    classes.innerHTML = `
-                                        <% for (var j=0; j<num_classes; j++) { %>
-                                            <% if (json_classes[0][j].course_id == json_courses[i][0].id) { %>
-                                                <li class="list-group-item d-flex justify-content-between mt-2">
-                                                    <%= json_classes[0][j].title %>
-                                                    <a class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#collpaseClass<%= json_classes[0][j].id %>">Ver Aula</a>
-                                                </li>
-                                                <li class="list-group-item border-0">
-                                                    <div class="collapse mx-3" id="collpaseClass<%= json_classes[0][j].id %>">
-                                                        <h6 class="heading"><strong>Sumário</strong></h6>
-                                                        <p class="heading"><%= json_classes[0][j].summary %><p>
-                                                    </div>    
-                                                </li>
-                                                
-                                            <% } else {
-                                                break
-                                            } %>
-                                        <% } %>
-                                    `
-                                    professorName.innerHTML = `
-                                        <% for (var k=0; k<json_professors[0].length; k++) { %>
-                                            <% if (json_professors[i][0].id == json_courses[i][0].id_professor) { %>
-                                                <strong>Professor:</strong> <%= json_professors[i][0].name %> | <strong>E-mail:</strong> <%= json_professors[i][0].email %>
-                                            <% } else {
-                                                break
-                                            } %>
-                                        <% } %>
-                                    `
-                                    $("#plus-info").fadeIn()
-                                })
-                            </script>
+                                <script>
+                                    document.getElementById("btnCourse<%= json_courses[i][0].id %>").addEventListener("click", (event) => {
+                                        let classes = document.getElementById("classes")
+                                        let courseHeader = document.getElementById("courseHeader")
+                                        let professorName = document.getElementById("professorName")
+                                        courseHeader.innerHTML = '<strong><%= json_courses[i][0].type %></strong>'
+                                        classes.innerHTML = `
+                                            <% for (var j=0; j<num_classes; j++) { %>
+                                                <% if (json_classes[0][j].course_id == json_courses[i][0].id) { %>
+                                                    <% console.log(json_classes[0][j].title) %>
+                                                    <li class="list-group-item d-flex justify-content-between mt-2">
+                                                        <%= json_classes[0][j].title %>
+                                                        <a class="btn btn-primary" href="/activeEnrollements/<%= json_courses[i][0].id %>/<%= json_student[0].id %>">Ver Aula</a>
+                                                    </li>
+                                                <% } %>
+                                            <% } %>
+                                        `
+                                        professorName.innerHTML = `
+                                            <% for (var k=0; k<json_professors[0].length; k++) { %>
+                                                <% if (json_professors[i][0].id == json_courses[i][0].id_professor) { %>
+                                                    <strong>Professor:</strong> <%= json_professors[i][0].name %> | <strong>E-mail:</strong> <%= json_professors[i][0].email %>
+                                                <% } else {
+                                                    break
+                                                } %>
+                                            <% } %>
+                                        `
+                                        $("#plus-info").fadeIn()
+                                    })
+                                </script>
+                                <% } %>
                             <% } %>
                     </div>
                 </div>

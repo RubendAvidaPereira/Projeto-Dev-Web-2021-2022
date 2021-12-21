@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<%- include("./include/student_head") %>
+
+<!-- Content -->
+<body>
+    <%- include("./include/student_navbar") %>
+
+    <%- include("./include/student_footer") %>
+
+    <div class="main">
+        <div class="row mt-4 mx-2 d-flex justify-content-between">
+            <div class="col-lg-6">
+                <h3 class="heading"><strong><%= json_course[0].type %></strong></h3>
+            </div>
+            <div class="col-lg-6">
+                <h5 class="heading text-end mt-2"><strong>Professor: </strong> <%= json_professor.name %> | <strong>E-mail: </strong> <%= json_professor.email %></h5>
+            </div>
+            <hr class="mt-1" style="background-color: #0c2d48bd;">
+        </div>
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-11">
+                <div class="card mx-2 shadow">
+                    <div class="card-body statistic">
+                        <div class="row mb-3 mt-2">
+                            <h3 class="heading"><strong><i class="bi bi-archive"></i>&nbsp;&nbsp; Aulas </strong></h3>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <% for (let i = 0; i < json_classes.length; i++) { %>
+                                <li class="list-group-item d-flex justify-content-between mb-2">
+                                    <h5 class="heading"><strong><%= json_classes[i].title %></strong></h5>
+                                    <button class="btn btn-primary border-0" data-bs-toggle="collapse" data-bs-target="#collapse<%= json_classes[i].id %>">Abrir Aula</button>
+                                </li>
+                                <div class="collapse" id="collapse<%= json_classes[i].id %>">
+                                    <ul class="list-group list-group-flush">
+                                        <div class="row d-flex justify-content-between">
+                                            <div class="col-lg-6">
+                                                <h5 class="mx-3"><strong>Sumário:</strong></h5>
+                                            </div>
+
+                                            <div class="col-lg-6">
+                                                <h5 class="mx-3"><strong>Publicado em: </strong> <%= json_classes[i].class_date %></h5>
+                                            </div>
+                                        </div>
+                                        <li class="list-group-item border-0"><%= json_classes[i].summary %></li>
+                                    </ul>
+                                </div>
+                            <% } %>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

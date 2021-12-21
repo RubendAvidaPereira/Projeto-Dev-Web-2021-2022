@@ -3,6 +3,7 @@
 // Required Modules for the Controller
 require("dotenv").config()
 
+const { Op } = require("sequelize");
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
@@ -184,6 +185,10 @@ exports.loginProfessor = async (req, res) => {
 // Get Student Data
 exports.getStudentData = async (req, res) => {
     try {
+
+        let num_classes = 0
+        let num_enrollements = 0
+
         // Get relevant student Data
         const getStudent = await students.findAll({
             where: {
@@ -205,70 +210,85 @@ exports.getStudentData = async (req, res) => {
                 exclude: ['createdAt', 'updatedAt']
             }
         })
-        const num_enrollements = Enrollements.length
+        num_enrollements = Enrollements.length
         const JSON_enrollement = JSON.stringify(Enrollements)
         const json_enrollement = JSON.parse(JSON_enrollement)
 
-        /**
-        * > Getting professors and Courses
-        *  
-        */
-        const professors_list = []
-        const course_list = []
-        for (let i = 0; i < num_enrollements; i++) {
-            const course = await courses.findAll({
-                where: {
-                    id: json_enrollement[i].id_course
-                },
-                attributes: {
-                    exclude: ['createdAt', 'updatedAt']
-                }
-            })
-            course_list.push(course)
-        }
-        const JSON_courses = JSON.stringify(course_list)
-        const json_courses = JSON.parse(JSON_courses)
-
-
-        for (let i = 0; i < num_enrollements; i++) {
-            const professor = await professors.findAll({
-                where: {
-                    id: json_courses[i][0].id_professor
-                },
-                attributes: {
-                    exclude: ['createdAt', 'updatedAt', 'password']
-                }
-            })
-            professors_list.push(professor)
-        }
-        const JSON_professors = JSON.stringify(professors_list)
-        const json_professors = JSON.parse(JSON_professors)
-        // Get Classes
-        const class_list = []
-        for (let i = 0; i < course_list.length; i++) {
-            if (!json_courses[0][i]) {
-                break
+        if (num_enrollements == 0) {
+            return {
+                json_student,
+                num_enrollements,
+                num_classes
             }
-            else {
+        }
+        if (num_enrollements != 0) {
+            /**
+            * > Getting professors and Courses
+            *  
+            */
+            const professors_list = []
+            const course_list = []
+            const id_course_list = []
+            for (let i = 0; i < num_enrollements; i++) {
+                const course = await courses.findAll({
+                    where: {
+                        id: json_enrollement[i].id_course
+                    },
+                    attributes: {
+                        exclude: ['createdAt', 'updatedAt']
+                    }
+                })
+                id_course_list.push(json_enrollement[i].id_course)
+                course_list.push(course)
+            }
+            const JSON_courses = JSON.stringify(course_list)
+            const json_courses = JSON.parse(JSON_courses)
+
+            for (let i = 0; i < num_enrollements; i++) {
+                const professor = await professors.findAll({
+                    where: {
+                        id: json_courses[i][0].id_professor
+                    },
+                    attributes: {
+                        exclude: ['createdAt', 'updatedAt', 'password']
+                    }
+                })
+                professors_list.push(professor)
+            }
+            const JSON_professors = JSON.stringify(professors_list)
+            const json_professors = JSON.parse(JSON_professors)
+
+            // Get Classes
+            const class_list = []
+            
+            try {
                 const student_class = await classes.findAll({
                     where: {
-                        course_id: json_courses[0][i].id
+                        course_id: {
+                            [Op.or]: id_course_list
+                        }
+                    },
+                    attributes: {
+                        exclude: ['createdAt', 'updatedAt']
                     }
                 })
                 class_list.push(student_class)
-            }
-        }
-        const JSON_classes = JSON.stringify(class_list)
-        const json_classes = JSON.parse(JSON_classes)
-        const num_classes = json_classes[0].length
+    
+                const JSON_classes = JSON.stringify(class_list)
+                const json_classes = JSON.parse(JSON_classes)
+                num_classes = json_classes[0].length
 
-        return {
-            json_student,
-            json_courses,
-            json_classes,
-            json_professors,
-            num_enrollements,
-            num_classes
+                return {
+                    json_student,
+                    json_courses,
+                    json_classes,
+                    json_professors,
+                    num_enrollements,
+                    num_classes
+                }
+            } catch (err) {
+                console.log(err)
+            }
         }
     } catch (err) {
         return res.status(400).send({ error: err })
@@ -344,6 +364,118 @@ exports.enrollInCourse = async (req, res) => {
         })
         return res.status(201).send({ message: 'EnrollementSuccessfull'})
     } catch {
+        return res.status(400).send({ error: err })
+    }
+}
+
+// Active Courses
+exports.activeEnrollements = async (req, res) => {
+    try {
+        // Get Relevant Student Data
+        const getData = await students.findAll({
+            where: {
+                email: req.email,
+            },
+            attributes: {
+                exclude: ['password', 'createdAt', 'updatedAt']
+            }
+        })
+        const JSON_student = JSON.stringify(getData)
+        const json_student = JSON.parse(JSON_student)
+
+        // Get current Enrollements
+        const getEnrollements = await enrollements.findAll({
+            where: {
+                id_student: json_student[0].id
+            }
+        })
+        const JSON_enrollements = JSON.stringify(getEnrollements)
+        const json_enrollements = JSON.parse(JSON_enrollements)
+
+        // Get Courses
+        const course_list = []
+        for (let i = 0; i < json_enrollements.length; i++) {
+            const course = await courses.findAll({
+                where: {
+                    id: json_enrollements[i].id_course
+                },
+                attributes: {
+                    exclude: ['createdAt', 'updatedAt']
+                }
+            })
+            course_list.push(course)
+        }
+        const JSON_courses = JSON.stringify(course_list)
+        const json_courses = JSON.parse(JSON_courses)
+
+        return {
+            json_student,
+            json_enrollements,
+            json_courses
+        }
+        
+    } catch (err) {
+        return res.status(400).send({ error: err })
+    }
+}
+
+exports.infoCourse = async (req, res) => {
+    const studentID = req.params.id_student
+    const courseID = req.params.id_course
+    
+    try {
+        // Getting relevant student data
+        const getStudent = await students.findAll({
+            where: {
+                id: studentID
+            },
+            attributes: {
+                exclude: ['createdAt', 'updatedAt', 'password']
+            }
+        })
+        const JSON_student = JSON.stringify(getStudent)
+        const json_student = JSON.parse(JSON_student)
+
+        // Getting Course
+        const getCourse = await courses.findAll({
+            where: {
+                id: courseID
+            }
+        })
+        const JSON_course = JSON.stringify(getCourse)
+        const json_course = JSON.parse(JSON_course)
+
+        // Getting Course Classes 
+        const getClasses = await classes.findAll({
+            where: {
+                course_id: courseID
+            },
+            attributes: {
+                exclude: ['createdAt', 'updatedAt'] 
+            }
+        })
+        const JSON_classes = JSON.stringify(getClasses)
+        const json_classes = JSON.parse(JSON_classes)
+        
+        // Getting Course Professor Data
+        const getProfessor = await professors.findOne({
+            where: {
+                id: json_course[0].id_professor
+            },
+            attributes: {
+                exclude: ['createdAt', 'updatedAt', 'password']
+            }
+        })
+        const JSON_professor = JSON.stringify(getProfessor)
+        const json_professor = JSON.parse(JSON_professor)
+
+        return {
+            json_student,
+            json_classes,
+            json_professor,
+            json_course,
+        }
+    } catch (err) {
         return res.status(400).send({ error: err })
     }
 }

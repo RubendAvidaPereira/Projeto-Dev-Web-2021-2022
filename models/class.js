@@ -19,7 +19,7 @@ const classes = database.define('classes', {
         allowNull: false
     },
     class_date: {
-        type: sequelize.DATE
+        type: sequelize.DATEONLY,
     },
     course_id: {
         type: sequelize.INTEGER,

@@ -80,20 +80,29 @@ router.get('/studentHomepage', authenticate, async (req, res) => {
     const json_professors = response.json_professors
     const num_enrollements = response.num_enrollements
     const num_classes = response.num_classes
-    res.render('student_homepage', {
-        json_student,
-        json_courses,
-        json_classes,
-        json_professors,
-        num_enrollements,
-        num_classes
-    })
+
+    if (num_enrollements == 0){
+        res.render('student_homepage', {
+            json_student,
+            num_enrollements,
+            num_classes
+        })
+    }
+    if (num_enrollements != 0) {
+        res.render('student_homepage', {
+            json_student,
+            json_courses,
+            json_classes,
+            json_professors,
+            num_enrollements,
+            num_classes
+        })
+    }
 })
 
 // Student Profile
 router.get('/studentProfile', authenticate, async (req, res) => {
     const json_student = await controller.getStudentProfile(req, res)
-    console.log(json_student)
         
     res.render('student_profile', {
         json_student
@@ -106,6 +115,7 @@ router.get('/allCourses', authenticate, async (req, res) => {
     const json_student = response.json_student
     const json_courses = response.json_courses
     const json_enrollements = response.json_enrollements
+
     res.render('all_courses', {
         json_student,
         json_courses,
@@ -113,7 +123,36 @@ router.get('/allCourses', authenticate, async (req, res) => {
     })
 })
 
+// Get Active Enrollements
+router.get('/activeEnrollements', authenticate, async (req, res) => {
+    const response = await controller.activeEnrollements(req, res)
+    const json_student = response.json_student
+    const json_courses = response.json_courses
+    const json_enrollements = response.json_enrollements
+    res.render('active_enrollements', {
+        json_student,
+        json_courses,
+        json_enrollements
+    })
+})
+
+// Enrolled Course
+router.get('/activeEnrollements/:id_course/:id_student', authenticate, async (req, res) => {
+    const response = await controller.infoCourse(req, res)
+    const json_student = response.json_student
+    const json_professor = response.json_professor
+    const json_classes = response.json_classes
+    const json_course = response.json_course
+    res.render('info_course', {
+        json_student,
+        json_professor,
+        json_classes,
+        json_course
+    })
+})
+
 // Enroll in Course
 router.post('/enrollCourse/:id_course/:id_student', authenticate, controller.enrollInCourse)
+
 
 module.exports = router
