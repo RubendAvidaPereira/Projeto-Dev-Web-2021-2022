@@ -2,6 +2,7 @@
 const path = require('path')
 const sequelize = require('sequelize')
 const database = require('./db')
+const tests = require('./models/test')
 
 async function populate_db() {
 
@@ -10,6 +11,7 @@ async function populate_db() {
     * > Classes
     * > Courses
     * > Enrollements
+    * > Tests
     */
     const classes = require('./models/class')
     const courses = require('./models/course')
@@ -108,7 +110,37 @@ async function populate_db() {
         course_id: 4,
     })
 
-    
+    // Inscricoes
+    const enrollement_1 = await enrollements.create ({
+        id_student: 1,
+        id_course: 1,
+    })
+
+    const enrollement_2 = await enrollements.create ({
+        id_student: 1,
+        id_course: 2,
+    })
+
+    // Tests
+    const test_1 = await tests.create ({
+        test_result: 0,
+        id_enrollement: 1,
+        test_date: '2021-12-22',
+        question_1: 'Defina Javascript.',
+        question_2: 'Defina HTML.',
+        question_3: 'Defina CSS.',
+        question_4: 'Explique o objetivo de Desenvolvimento Web.',
+    })
+
+    const test_2 = await tests.create ({
+        test_result: 0,
+        id_enrollement: 2,
+        test_date: '2021-12-22',
+        question_1: 'Defina Programação.',
+        question_2: 'Defina Objeto.',
+        question_3: 'Defina Classe.',
+        question_4: 'Explique o que é uma instância de um objeto.',
+    })
 }
 
 populate_db()

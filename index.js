@@ -1,13 +1,13 @@
 // ===========================================================================================================================
 // ===========================================================================================================================
 // Main Imports and Modules
-const express = require('express') // Load da framework Express
-const cors = require('cors') // Load da module cors, necessário para o controlo dos headers e cross origin resource.
-const path = require('path') // Load do module path
-const ejs = require('ejs') // Load do module ejs
-const cookie_parser = require('cookie-parser') // Load do module cookie-parser, necessário para controlo de autentificacao
+const express        = require('express') // Load da framework Express
+const cors           = require('cors') // Load da module cors, necessário para o controlo dos headers e cross origin resource.
+const path           = require('path') // Load do module path
+const ejs            = require('ejs') // Load do module ejs
+const cookie_parser  = require('cookie-parser') // Load do module cookie-parser, necessário para controlo de autentificacao
+const routes         = require('./routes/routes.js') // Especificar o ficheiro das rotas
 
-const routes = require('./routes/routes.js') // Especificar o ficheiro das rotas
 
 const app = express()
 

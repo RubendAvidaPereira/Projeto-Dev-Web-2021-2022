@@ -10,10 +10,10 @@
     <div class="main">
         <div class="row mt-4 mx-2 d-flex justify-content-between">
             <div class="col-lg-6">
-                <h3 class="heading"><strong><%= json_course[0].type %></strong></h3>
+                <h2 class="heading"><strong><%= json_course[0].type %></strong></h2>
             </div>
             <div class="col-lg-6">
-                <h5 class="heading text-end mt-2"><strong>Professor: </strong> <%= json_professor.name %> | <strong>E-mail: </strong> <%= json_professor.email %></h5>
+                <h4 class="heading text-end mt-2"><strong>Professor: </strong> <%= json_professor.name %> | <strong>E-mail: </strong> <%= json_professor.email %></h4>
             </div>
             <hr class="mt-1" style="background-color: #0c2d48bd;">
         </div>
@@ -27,7 +27,7 @@
                         <ul class="list-group list-group-flush">
                             <% for (let i = 0; i < json_classes.length; i++) { %>
                                 <li class="list-group-item d-flex justify-content-between mb-2">
-                                    <h5 class="heading"><strong><%= json_classes[i].title %></strong></h5>
+                                    <h4 class="heading"><strong><%= json_classes[i].title %></strong></h4>
                                     <button class="btn btn-primary border-0" data-bs-toggle="collapse" data-bs-target="#collapse<%= json_classes[i].id %>">Abrir Aula</button>
                                 </li>
                                 <div class="collapse" id="collapse<%= json_classes[i].id %>">
@@ -46,6 +46,11 @@
                                 </div>
                             <% } %>
                         </ul>
+                        <div class="row d-flex mt-4 mb-3 justify-content-end">
+                            <div class="col-lg-auto">
+                                <a class="btn btn-lg btn-primary border-0" href="/activeEnrollements/<%= json_course[0].id %>/<%= json_student[0].id %>/test">Teste da Disciplina</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

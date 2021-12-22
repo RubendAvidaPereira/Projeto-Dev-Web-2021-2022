@@ -42,7 +42,7 @@ async function authenticate(req, res, next) {
 
 // =================================================================================================
 // =================================================================================================
-// Login and Register Page
+// GET routes
 router.get('/', (req, res) => {
     console.log(`GET request - Index`)
     res.render('index')
@@ -54,22 +54,10 @@ router.get('/about', (req, res) => {
     res.render('about')
 })
 
-// Register Student
-router.post('/registerStudent', controller.registerStudent)
-
-// Register Professor
-router.post('/registerProfessor', controller.registerProfessor)
-
-// Login Student
-router.post('/studentLogin', controller.loginStudent)
-
-// Login Professor
-router.post('/professorLogin', controller.loginProfessor)
-
 
 // =================================================================================================
 // =================================================================================================
-// User needs to be authenticated to use this routes
+// User needs to be authenticated to use next routes
 
 // Student Homepage
 router.get('/studentHomepage', authenticate, async (req, res) => {
@@ -151,8 +139,39 @@ router.get('/activeEnrollements/:id_course/:id_student', authenticate, async (re
     })
 })
 
+router.get('/activeEnrollements/:id_course/:id_student/test', authenticate, async (req, res) => {
+    const response = await controller.getTest(req, res)
+    const json_student = response.json_student
+    const json_test = response.json_test
+    
+    res.render('test', {
+        json_student,
+        json_test
+    })
+})
+
+
+// =================================================================================================
+// =================================================================================================
+// POST routes
+
+// Register Student
+router.post('/registerStudent', controller.registerStudent)
+
+// Register Professor
+router.post('/registerProfessor', controller.registerProfessor)
+
+// Login Student
+router.post('/studentLogin', controller.loginStudent)
+
+// Login Professor
+router.post('/professorLogin', controller.loginProfessor)
+
 // Enroll in Course
 router.post('/enrollCourse/:id_course/:id_student', authenticate, controller.enrollInCourse)
+
+// Search Course
+router.post('/search', authenticate, controller.search)
 
 
 module.exports = router

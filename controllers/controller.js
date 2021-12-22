@@ -3,9 +3,10 @@
 // Required Modules for the Controller
 require("dotenv").config()
 
-const { Op } = require("sequelize");
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
+const { Op }  = require("sequelize");
+const bcrypt  = require('bcrypt')
+const jwt     = require('jsonwebtoken')
+
 
 /** Models
  * > Student
@@ -14,11 +15,12 @@ const jwt = require('jsonwebtoken')
 * > Courses
 * > Enrollements
 */
-const students = require('../models/student')
-const professors = require('../models/professor')
-const classes = require('../models/class')
-const courses = require('../models/course')
-const enrollements = require('../models/enrollment')
+const students      = require('../models/student')
+const professors    = require('../models/professor')
+const classes       = require('../models/class')
+const courses       = require('../models/course')
+const enrollements  = require('../models/enrollment')
+const tests         = require('../models/test')
 
 
 // ===========================================================================================================================
@@ -474,6 +476,85 @@ exports.infoCourse = async (req, res) => {
             json_classes,
             json_professor,
             json_course,
+        }
+    } catch (err) {
+        return res.status(400).send({ error: err })
+    }
+}
+
+exports.search = async (req, res) => {
+    try {
+        const search = req.body.searchText
+        console.log(search)
+        if (search == '') {
+            const course = await courses.findAll({
+                attributes: {
+                    exclude: ['createdAt', 'updateAt']
+                }
+            })
+            const JSON_course = JSON.stringify(course)
+            const json_course = JSON.parse(JSON_course)
+            console.log(json_course)
+            res.json(json_course)
+        }
+        else {
+            const course = await courses.findAll({
+                where: {
+                    type: {
+                        [Op.like]: search
+                    },
+                },
+                attributes: {
+                    exclude: ['createdAt', 'updateAt']
+                }
+            })
+            const JSON_course = JSON.stringify(course)
+            const json_course = JSON.parse(JSON_course)
+    
+            res.json(json_course)    
+        }
+    } catch (err) {
+        return res.status(404).send({ error: err })
+    }
+}
+
+exports.getTest = async (req, res) => {
+    try {
+        
+        // Get relevant Student Data
+        const getStudent = await students.findAll({
+            where: {
+                email: req.email
+            },
+            attributes: {
+                exclude: ['createdAt', 'updatedAt', 'password']
+            }
+        })
+        const JSON_student = JSON.stringify(getStudent)
+        const json_student = JSON.parse(JSON_student)
+
+        // Get Enrollement
+        const getEnrollement = await enrollements.findAll({
+            where: {
+                id: req.params.id_course
+            },
+        })
+        const JSON_enrollement = JSON.stringify(getEnrollement)
+        const json_enrollement = JSON.parse(JSON_enrollement)
+
+        // Get Test
+        const getTest = await tests.findOne({
+            where: {
+                id_enrollement: 1
+            }
+        })
+        console.log(getTest)
+        const JSON_test = JSON.stringify(getTest)
+        const json_test = JSON.parse(JSON_test)
+
+        return {
+            json_student,
+            json_test
         }
     } catch (err) {
         return res.status(400).send({ error: err })

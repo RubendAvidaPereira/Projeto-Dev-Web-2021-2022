@@ -2,7 +2,9 @@
 <footer>
     <div class="row ml-3" style="margin-top: 1%;">
        <div class="col-lg-8">
-            <input id="search" class="form-control form-control-lg mx-3" role="search" placeholder="Procura...">
+           <form id="search">
+               <input id="searchText" class="form-control form-control-lg mx-3" role="search" placeholder="Procure por disciplina...">
+            </form>
        </div>
        <div class="col-lg-4 d-flex justify-content-end">
             <div class="btn-group dropup mx-3 mr-5">
@@ -18,5 +20,38 @@
             </div>
        </div> 
     </div>
+
+    <script>
+        let searchDiv = document.getElementById("searchDiv")
+        let search = document.getElementById("search")
+        
+        
+        search.addEventListener("submit", function(event) {
+            let postData = {
+                'searchText': $("#searchText").val()
+            }
+            let post = JSON.stringify(postData)
+            event.preventDefault()
+            console.log(post)
+            fetch(`/search`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: post,
+            }).then(async (response) => {
+                const data = await response.json()
+                let searchList = document.getElementById("searchList")
+                for (let i=0; i<data.length; i++) {
+                    searchList.innerHTML += `
+                        <li class="list-group-item border-0"><span class="bi bi-arrow-right-short"></span>&nbsp;<strong><a class="list-link" href="/activeEnrollements/${data[i].id}/<%= json_student[0].id %>">${data[i].type}</a></strong></li>
+                    `
+                }
+                $("#searchDiv").fadeIn()
+                $("#searchHeader").text(`Resultados: `)
+            })
+     
+        })
+    </script>
 
 </footer>

@@ -101,7 +101,48 @@ const enrollments = database.define('enrollments', {
         type: sequelize.INTEGER,
         model: 'courses', // References the Column/Model Courses
         key: 'id' // References the row ID in Column/Model Courses
-    }
+    },
+})
+
+
+//=============================================================
+//==========================[ Tests ]==========================
+//=============================================================
+const tests = database.define('tests', {
+    id: {
+        type: sequelize.INTEGER,
+        autoIncrement: true,
+        allowNull: false,
+        primaryKey: true
+    },
+    test_result: {
+        type: sequelize.INTEGER,
+        allowNull: true
+    },
+    test_done: {
+        type: sequelize.BOOLEAN,
+        default: false,
+    },
+    id_enrollement: {
+        type: sequelize.INTEGER,
+        model: 'courses', // References the Column/Model Courses
+        key: 'id' // References the row ID in Column/Model Courses
+    },
+    test_date: {
+        type: sequelize.DATEONLY
+    },
+    question_1: {
+        type: sequelize.TEXT
+    },
+    question_2: {
+        type: sequelize.TEXT
+    },
+    question_3: {
+        type: sequelize.TEXT
+    },
+    question_4: {
+        type: sequelize.TEXT
+    },
 })
 
 
@@ -139,8 +180,9 @@ const professors = database.define('professors', {
 //=============================================================
 
 professors.hasMany(courses)
+enrollments.hasOne(tests)
 students.hasMany(enrollments)
 courses.hasMany(enrollments)
 classes.belongsTo(courses)
 
-module.exports = classes, courses, students, professors, enrollments
+module.exports = classes, courses, students, professors, enrollments, tests

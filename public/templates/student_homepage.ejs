@@ -34,19 +34,36 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        <!-- Search Results -->
+                        <div class="row mx-0" style="margin-top: 3%;">
+                            <div class="col-lg-12">
+                                <div id="searchDiv" style="display: none;">
+                                    <div class="card shadow">
+                                        <div class="card-body statistic w-100">
+                                            <h5 class="heading" id="searchHeader"><strong></strong></h5>
+                                            <ul class="list-group list-group-flush" id="searchList">
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Course Classes and General Info -->
                         <div class="row mx-0" style="margin-top: 3%;">
                             <div class="col-lg-12">
                                 <div id="plus-info" style="display: none;">
                                     <div class="card shadow">
                                         <div class="card-body statistic w-100">
-                                            <h5 class="heading" id="courseHeader"></h5>
+                                            <h4 class="heading" id="courseHeader"></h4>
                                             <div class="row d-flex justify-content-between">
                                                 <div class="col-lg-6">
-                                                    <h6 class="heading ml-1 mt-1"><strong>Aulas</strong></h6>
+                                                    <h5 class="heading ml-1 mt-1"><strong>Aulas</strong></h5>
                                                 </div>
                                                 <div class="col-lg-6">
-                                                    <h6 id="professorName"></h6>
+                                                    <h6 id="professorName" class="mt-1"></h6>
                                                 </div>
                                             </div>
                                             <ul class="list-group list-group-flush " id="classes">
@@ -57,6 +74,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
 
                     <div class="col-lg-3 mt-4 mx-2 mb-3">
@@ -87,7 +105,6 @@
                                         classes.innerHTML = `
                                             <% for (var j=0; j<num_classes; j++) { %>
                                                 <% if (json_classes[0][j].course_id == json_courses[i][0].id) { %>
-                                                    <% console.log(json_classes[0][j].title) %>
                                                     <li class="list-group-item d-flex justify-content-between mt-2">
                                                         <%= json_classes[0][j].title %>
                                                         <a class="btn btn-primary" href="/activeEnrollements/<%= json_courses[i][0].id %>/<%= json_student[0].id %>">Ver Aula</a>

@@ -211,6 +211,15 @@ body {
     /* Colors */
     color: #B1D4E0;
 }
+.list-link {
+    /* Colors */
+    color: #0c2d48cb;
+    text-decoration: none;
+}
+.list-link:hover {
+    /* Colors */
+    color: #0c2d48;
+}
 
 
 /* ============================================================================================= */
@@ -273,7 +282,7 @@ body {
     width: 15rem !important;
     
     /* Colors */
-    background-color: #B1D4E0 !important;
+    background-color: #FFFFFF !important;
 
     /* Other Styles */
     border: 0.1rem solid #0C2D48;
