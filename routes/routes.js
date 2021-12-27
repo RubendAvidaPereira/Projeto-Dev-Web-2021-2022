@@ -18,7 +18,7 @@ async function authenticate(req, res, next) {
     const request_token = req.cookies.token
 
     if (!request_token) {
-        return res.status(403).redirect('/')
+        return res.redirect('/')
     }
     try {
         const string = request_token.split('|')
@@ -31,10 +31,10 @@ async function authenticate(req, res, next) {
             req.token = token
         }
         else {
-            return res.status(403)
+            return res.redirect('/')
         }
     } catch (err) {
-        return res.status(403).send({ error: err }).redirect('/')
+        return res.redirect('/')
     }
     next()
 }
@@ -172,6 +172,9 @@ router.post('/enrollCourse/:id_course/:id_student', authenticate, controller.enr
 
 // Search Course
 router.post('/search', authenticate, controller.search)
+
+// Submit Test
+router.post('/submitTest/:id_test', authenticate, controller.submitTest)
 
 
 module.exports = router

@@ -17,7 +17,7 @@ const tests = database.define('tests', {
         type: sequelize.BOOLEAN,
         default: false,
     },
-    id_enrollement: {
+    id_course: {
         type: sequelize.INTEGER,
         model: 'courses', // References the Column/Model Courses
         key: 'id' // References the row ID in Column/Model Courses

@@ -57,13 +57,20 @@
                                 <div id="plus-info" style="display: none;">
                                     <div class="card shadow">
                                         <div class="card-body statistic w-100">
-                                            <h4 class="heading" id="courseHeader"></h4>
+                                            <div class="row d-flex justify-content-between mt-3 mb-4">
+                                                <div class="col-lg-6">
+                                                    <h4 class="heading" id="courseHeader"></h4>
+                                                </div>
+                                                <div class="col-lg-6 d-flex justify-content-end">
+                                                    <a class="btn btn-primary" id="courseLink">Abrir Disciplina</a>
+                                                </div>
+                                            </div>
                                             <div class="row d-flex justify-content-between">
                                                 <div class="col-lg-6">
                                                     <h5 class="heading ml-1 mt-1"><strong>Aulas</strong></h5>
                                                 </div>
                                                 <div class="col-lg-6">
-                                                    <h6 id="professorName" class="mt-1"></h6>
+                                                    <h6 id="professorName" class="mt-2"></h6>
                                                 </div>
                                             </div>
                                             <ul class="list-group list-group-flush " id="classes">
@@ -101,17 +108,20 @@
                                         let classes = document.getElementById("classes")
                                         let courseHeader = document.getElementById("courseHeader")
                                         let professorName = document.getElementById("professorName")
+                                        let courseLink = document.getElementById("courseLink")
                                         courseHeader.innerHTML = '<strong><%= json_courses[i][0].type %></strong>'
                                         classes.innerHTML = `
                                             <% for (var j=0; j<num_classes; j++) { %>
                                                 <% if (json_classes[0][j].course_id == json_courses[i][0].id) { %>
                                                     <li class="list-group-item d-flex justify-content-between mt-2">
                                                         <%= json_classes[0][j].title %>
-                                                        <a class="btn btn-primary" href="/activeEnrollements/<%= json_courses[i][0].id %>/<%= json_student[0].id %>">Ver Aula</a>
                                                     </li>
                                                 <% } %>
                                             <% } %>
                                         `
+
+                                        courseLink.href += "/activeEnrollements/<%= json_courses[i][0].id %>/<%= json_student[0].id %>"
+
                                         professorName.innerHTML = `
                                             <% for (var k=0; k<json_professors[0].length; k++) { %>
                                                 <% if (json_professors[i][0].id == json_courses[i][0].id_professor) { %>
@@ -130,32 +140,4 @@
                 </div>
             </div>
 
-            <!-- Logout Modal -->
-            <div class="modal fade" id="logoutModal" aria-labelledby="logoutModal" aria-hidden="true" tabindex="-1">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            <h5 class="heading mx-2 mt-2"><strong>Logout?</strong></h5>
-                            <br>
-                            <div class="row mt-3 d-flex justify-content-end">
-                                <div class="col-lg-6">
-                                    <a class="btn btn-primary w-100" data-bs-dismiss="modal">Fechar</a>
-                                </div>
-                                <div class="col-lg-6">
-                                    <a class="btn btn-danger w-100" id="btnLogout">Logout</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <script>
-                let logout = document.getElementById('btnLogout')
-
-                logout.addEventListener("click", (req, res) => {
-                    document.cookie = "token= ;";
-                    location.reload()
-                })
-            </script>
     </body>

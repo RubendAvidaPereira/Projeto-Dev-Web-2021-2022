@@ -24,36 +24,67 @@
                         <div class="row mb-3 mt-2">
                             <h3 class="heading"><strong><i class="bi bi-archive"></i>&nbsp;&nbsp; Aulas </strong></h3>
                         </div>
-                        <ul class="list-group list-group-flush">
-                            <% for (let i = 0; i < json_classes.length; i++) { %>
-                                <li class="list-group-item d-flex justify-content-between mb-2">
-                                    <h4 class="heading"><strong><%= json_classes[i].title %></strong></h4>
-                                    <button class="btn btn-primary border-0" data-bs-toggle="collapse" data-bs-target="#collapse<%= json_classes[i].id %>">Abrir Aula</button>
-                                </li>
-                                <div class="collapse" id="collapse<%= json_classes[i].id %>">
-                                    <ul class="list-group list-group-flush">
-                                        <div class="row d-flex justify-content-between">
-                                            <div class="col-lg-6">
-                                                <h5 class="mx-3"><strong>Sumário:</strong></h5>
-                                            </div>
-
-                                            <div class="col-lg-6">
-                                                <h5 class="mx-3"><strong>Publicado em: </strong> <%= json_classes[i].class_date %></h5>
-                                            </div>
-                                        </div>
-                                        <li class="list-group-item border-0"><%= json_classes[i].summary %></li>
-                                    </ul>
+                        <% if (!json_classes) { %>
+                            <ul class="list-group list-group-flush">
+                                <div class="row d-flex justify-content-between">
+                                    <div class="col-lg-8">
+                                        <li class="list-group-item border-0"><h3>Não está inscrito nesta disciplina. Deseja inscrever-se?</h3></li>
+                                    </div>
+                                    <div class="col-lg-4 d-flex justify-content-end">
+                                        <li class="list-group-item border-0"><button class="btn btn-lg btn-primary" id="enrollBtn">Inscrever</button></li>
+                                        <script>
+                                            $("#enrollBtn").click(() => {
+                                                fetch('/enrollCourse/<%= json_course[0].id %>/<%= json_student[0].id %>', {
+                                                    method: 'POST',
+                                                    headers: {
+                                                        'Content-Type': 'application/json'
+                                                    },
+                                                }).then((response) => {
+                                                    if (response.status == 201) {
+                                                        location.reload()
+                                                    }
+                                                })
+                                            })
+                                        </script>
+                                    </div>
                                 </div>
-                            <% } %>
-                        </ul>
-                        <div class="row d-flex mt-4 mb-3 justify-content-end">
-                            <div class="col-lg-auto">
-                                <a class="btn btn-lg btn-primary border-0" href="/activeEnrollements/<%= json_course[0].id %>/<%= json_student[0].id %>/test">Teste da Disciplina</a>
+                            </ul>
+                        <% } else { %>
+                            <ul class="list-group list-group-flush">
+                                <% for (let i = 0; i < json_classes.length; i++) { %>
+                                    <li class="list-group-item d-flex justify-content-between mb-2">
+                                        <h4 class="heading"><strong><%= json_classes[i].title %></strong></h4>
+                                        <button class="btn btn-primary border-0" data-bs-toggle="collapse" data-bs-target="#collapse<%= json_classes[i].id %>">Abrir Aula</button>
+                                    </li>
+                                    <div class="collapse" id="collapse<%= json_classes[i].id %>">
+                                        <ul class="list-group list-group-flush">
+                                            <div class="row d-flex justify-content-between mt-3">
+                                                <div class="col-lg-6">
+                                                    <h5 class="mx-3"><strong>Sumário:</strong></h5>
+                                                </div>
+    
+                                                <div class="col-lg-6">
+                                                    <h5 class="mx-3"><strong>Publicado em: </strong> <%= json_classes[i].class_date %></h5>
+                                                </div>
+                                            </div>
+                                            <li class="list-group-item border-0"><%= json_classes[i].summary %></li>
+                                        </ul>
+                                    </div>
+                                <% } %>
+                            </ul>
+                            <div class="row d-flex mt-4 mb-3 justify-content-end">
+                                <div class="col-lg-auto">
+                                    <a class="btn btn-lg btn-primary border-0" href="/activeEnrollements/<%= json_course[0].id %>/<%= json_student[0].id %>/test">Teste da Disciplina</a>
+                                </div>
                             </div>
-                        </div>
+                        <% } %>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        $("#searchText").hide()
+     </script>
 </body>

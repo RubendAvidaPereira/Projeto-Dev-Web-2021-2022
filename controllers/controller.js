@@ -15,12 +15,13 @@ const jwt     = require('jsonwebtoken')
 * > Courses
 * > Enrollements
 */
-const students      = require('../models/student')
-const professors    = require('../models/professor')
-const classes       = require('../models/class')
-const courses       = require('../models/course')
-const enrollements  = require('../models/enrollment')
-const tests         = require('../models/test')
+const students      = require (  '../models/student'     )
+const professors    = require (  '../models/professor'   )
+const classes       = require (  '../models/class'       )
+const courses       = require (  '../models/course'      )
+const enrollements  = require (  '../models/enrollment'  )
+const tests         = require (  '../models/test'        )
+const submissions   = require (  '../models/submission'  )
 
 
 // ===========================================================================================================================
@@ -130,7 +131,7 @@ exports.loginStudent = async (req, res) => {
                     ).status(200).send({ message: "Successfull Login" })
                 }
                 else {
-                    res.status(400).send({ error: 'WrongPassword' })
+                    res.status(403).send({ error: 'WrongPassword' })
                 }
             })
         }
@@ -424,62 +425,118 @@ exports.activeEnrollements = async (req, res) => {
 exports.infoCourse = async (req, res) => {
     const studentID = req.params.id_student
     const courseID = req.params.id_course
-    
-    try {
-        // Getting relevant student data
-        const getStudent = await students.findAll({
-            where: {
-                id: studentID
-            },
-            attributes: {
-                exclude: ['createdAt', 'updatedAt', 'password']
-            }
-        })
-        const JSON_student = JSON.stringify(getStudent)
-        const json_student = JSON.parse(JSON_student)
 
-        // Getting Course
-        const getCourse = await courses.findAll({
-            where: {
-                id: courseID
-            }
-        })
-        const JSON_course = JSON.stringify(getCourse)
-        const json_course = JSON.parse(JSON_course)
-
-        // Getting Course Classes 
-        const getClasses = await classes.findAll({
-            where: {
-                course_id: courseID
-            },
-            attributes: {
-                exclude: ['createdAt', 'updatedAt'] 
-            }
-        })
-        const JSON_classes = JSON.stringify(getClasses)
-        const json_classes = JSON.parse(JSON_classes)
-        
-        // Getting Course Professor Data
-        const getProfessor = await professors.findOne({
-            where: {
-                id: json_course[0].id_professor
-            },
-            attributes: {
-                exclude: ['createdAt', 'updatedAt', 'password']
-            }
-        })
-        const JSON_professor = JSON.stringify(getProfessor)
-        const json_professor = JSON.parse(JSON_professor)
-
-        return {
-            json_student,
-            json_classes,
-            json_professor,
-            json_course,
+    const testEnrollement = await enrollements.findAll({
+        where: {
+            id_student: studentID,
+            id_course: courseID
         }
-    } catch (err) {
-        return res.status(400).send({ error: err })
+    })
+
+    console.log(testEnrollement)
+
+    if (testEnrollement.length == 0) {
+        try {
+            // Getting relevant student data
+            const getStudent = await students.findAll({
+                where: {
+                    id: studentID
+                },
+                attributes: {
+                    exclude: ['createdAt', 'updatedAt', 'password']
+                }
+            })
+            const JSON_student = JSON.stringify(getStudent)
+            const json_student = JSON.parse(JSON_student)
+
+            // Getting Course
+            const getCourse = await courses.findAll({
+                where: {
+                    id: courseID
+                }
+            })
+            const JSON_course = JSON.stringify(getCourse)
+            const json_course = JSON.parse(JSON_course)
+            
+            // Getting Course Professor Data
+            const getProfessor = await professors.findOne({
+                where: {
+                    id: json_course[0].id_professor
+                },
+                attributes: {
+                    exclude: ['createdAt', 'updatedAt', 'password']
+                }
+            })
+            const JSON_professor = JSON.stringify(getProfessor)
+            const json_professor = JSON.parse(JSON_professor)
+
+            return {
+                message: "Not enrolled",
+                json_student,
+                json_professor,
+                json_course
+            }   
+        } catch (err) {
+            return res.status(400).send({ error: err })
+        }
+    } else {
+        try {
+            // Getting relevant student data
+            const getStudent = await students.findAll({
+                where: {
+                    id: studentID
+                },
+                attributes: {
+                    exclude: ['createdAt', 'updatedAt', 'password']
+                }
+            })
+            const JSON_student = JSON.stringify(getStudent)
+            const json_student = JSON.parse(JSON_student)
+    
+            // Getting Course
+            const getCourse = await courses.findAll({
+                where: {
+                    id: courseID
+                }
+            })
+            const JSON_course = JSON.stringify(getCourse)
+            const json_course = JSON.parse(JSON_course)
+    
+            // Getting Course Classes 
+            const getClasses = await classes.findAll({
+                where: {
+                    course_id: courseID
+                },
+                attributes: {
+                    exclude: ['createdAt', 'updatedAt'] 
+                }
+            })
+            const JSON_classes = JSON.stringify(getClasses)
+            const json_classes = JSON.parse(JSON_classes)
+            
+            // Getting Course Professor Data
+            const getProfessor = await professors.findOne({
+                where: {
+                    id: json_course[0].id_professor
+                },
+                attributes: {
+                    exclude: ['createdAt', 'updatedAt', 'password']
+                }
+            })
+            const JSON_professor = JSON.stringify(getProfessor)
+            const json_professor = JSON.parse(JSON_professor)
+    
+            return {
+                json_student,
+                json_classes,
+                json_professor,
+                json_course,
+            }
+        } catch (err) {
+            return res.status(400).send({ error: err })
+        }   
     }
+    
 }
 
 exports.search = async (req, res) => {
@@ -494,14 +551,13 @@ exports.search = async (req, res) => {
             })
             const JSON_course = JSON.stringify(course)
             const json_course = JSON.parse(JSON_course)
-            console.log(json_course)
             res.json(json_course)
         }
         else {
             const course = await courses.findAll({
                 where: {
                     type: {
-                        [Op.like]: search
+                        [Op.like]: "%" + search +"%"
                     },
                 },
                 attributes: {
@@ -533,28 +589,63 @@ exports.getTest = async (req, res) => {
         const JSON_student = JSON.stringify(getStudent)
         const json_student = JSON.parse(JSON_student)
 
-        // Get Enrollement
-        const getEnrollement = await enrollements.findAll({
-            where: {
-                id: req.params.id_course
-            },
-        })
-        const JSON_enrollement = JSON.stringify(getEnrollement)
-        const json_enrollement = JSON.parse(JSON_enrollement)
-
         // Get Test
         const getTest = await tests.findOne({
             where: {
-                id_enrollement: 1
+                id_course: req.params.id_course
             }
         })
-        console.log(getTest)
         const JSON_test = JSON.stringify(getTest)
         const json_test = JSON.parse(JSON_test)
 
         return {
             json_student,
             json_test
+        }
+    } catch (err) {
+        return res.status(400).send({ error: err })
+    }
+}
+
+
+exports.submitTest = async (req, res) => {
+    try {
+        const testForm = req.body
+
+        // Get relevant Student Data
+        const getStudent = await students.findAll({
+            where: {
+                email: req.email
+            },
+            attributes: {
+                exclude: ['createdAt', 'updatedAt', 'password']
+            }
+        })
+        const JSON_student = JSON.stringify(getStudent)
+        const json_student = JSON.parse(JSON_student)
+
+        const getSubmission = await submissions.findAll({
+            where: {
+                student_email: json_student[0].email,
+                test_id: req.params.id_test,
+            }
+        })
+
+        if (getSubmission.length == 0) {
+            // Create Submission
+            const makeSubmission = await submissions.create({
+                test_id: req.params.id_test,
+                answer1: testForm.question_1,
+                answer2: testForm.question_2,
+                answer3: testForm.question_3,
+                answer4: testForm.question_4,
+                student_name: json_student[0].name,
+                student_email: json_student[0].email,
+            })
+            return res.status(201).send({ message: 'Test Submited!'})         
+        }
+        else {
+            return res.status(403).send({ error: "Test already Submited" })
         }
     } catch (err) {
         return res.status(400).send({ error: err })

@@ -23,7 +23,6 @@ async function populate_db() {
      * Algoritmos e Estruturas de Dados,
      * Gestao de Projetos,
      * Matematica 1,
-     * Matematica 2,
      */
     
     const course = await courses.create ({
@@ -49,11 +48,6 @@ async function populate_db() {
     const course_5 = await courses.create({
         type: 'Matemática 1',
         id_professor: 1,
-    })
-
-    const course_6 = await courses.create({
-        type: 'Matemática 2',
-        id_professor: 1
     })
 
     
@@ -102,12 +96,20 @@ async function populate_db() {
         course_id: 3,
     })
 
-    // Aula de Gestão de Projetos
+    // Aula de Gestao de Projetos
     const class_7 = await classes.create ({
         title: 'Introdução à Gestão de Projetos',
         summary: 'O que é Gestão de Projetos?',
         class_date: '2021-09-01',
         course_id: 4,
+    })
+
+    // Aula de Matematica 1
+    const class_8 = await classes.create ({
+        title: 'Introdução à Matemática 1',
+        summary: 'O que é uma Funcção?',
+        class_date: '2021-09-01',
+        course_id: 5,
     })
 
     // Inscricoes
@@ -121,10 +123,11 @@ async function populate_db() {
         id_course: 2,
     })
 
-    // Tests
+    // Testes
+    // Desenvolvimento Web
     const test_1 = await tests.create ({
         test_result: 0,
-        id_enrollement: 1,
+        id_course: 1,
         test_date: '2021-12-22',
         question_1: 'Defina Javascript.',
         question_2: 'Defina HTML.',
@@ -132,15 +135,50 @@ async function populate_db() {
         question_4: 'Explique o objetivo de Desenvolvimento Web.',
     })
 
+    // Programação Orientada a Objetos
     const test_2 = await tests.create ({
         test_result: 0,
-        id_enrollement: 2,
+        id_course: 2,
         test_date: '2021-12-22',
         question_1: 'Defina Programação.',
         question_2: 'Defina Objeto.',
         question_3: 'Defina Classe.',
         question_4: 'Explique o que é uma instância de um objeto.',
     })
+
+    // Algoritmos e Estruturas de Dados
+    const test_3 = await tests.create ({
+        test_result: 0,
+        id_course: 3,
+        test_date: '2021-12-22',
+        question_1: 'Defina Algoritmo.',
+        question_2: 'Defina Estrutura de Dados.',
+        question_3: 'Escreva um pseudo-código para um algoritmo capaz de imprimir os primeiros 10 números primos.',
+        question_4: 'Explique o objetivo Algoritmos aplicados a Estruturas de Dados.',
+    })
+
+    // Gestao de Projetos
+    const test_4 = await tests.create ({
+        test_result: 0,
+        id_course: 4,
+        test_date: '2021-12-22',
+        question_1: 'Defina Gestão de Projetos.',
+        question_2: 'Defina as principais fases de um projeto.',
+        question_3: 'Explique no que consiste a fase de desenvolvimento de um projeto.',
+        question_4: 'Apresente um plano para um projeto de um website.',
+    })
+
+    // Matematica 1
+    const test_5 = await tests.create ({
+        test_result: 0,
+        id_course: 5,
+        test_date: '2021-12-22',
+        question_1: 'Calcule f(x).',
+        question_2: 'Calcule g(x).',
+        question_3: 'Desenhe i(x).',
+        question_4: 'Calcule o Determinante da Matriz A.',
+    })
+
 }
 
 populate_db()
