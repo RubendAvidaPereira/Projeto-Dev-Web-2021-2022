@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<%- include("../include/professor/professor_head") %>
+
+    <!-- Content -->
+
+    <body>
+        <%- include("../include/professor/professor_navbar") %>
+
+        <!-- Footer -->
+        <%- include("../include/professor/professor_utils") %>
+            <div class="main">
+                <div class="container d-flex justify-content-between">
+                    <div class="row w-100">
+                        <div class="col-lg-9">
+                            <h4 class="text-start heading mx-3 mt-3"><strong>Bem-vindo, <%= json_professor[0].name %></strong></h4>
+                            <!-- Main -->
+                            <div class="row mt-4 mx-0 mb-4 w-100">
+                                <div class="col-lg-4">
+                                    <div class="card shadow">
+                                        <div class="card-body statistic w-100">
+                                            <h6><strong>Número de Alunos Inscritos</strong></h5>
+                                            <h4 style="margin-top: 3%;">
+                                                <strong>#</strong>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="card shadow">
+                                        <div class="card-body statistic w-100">
+                                            <h6><strong>Número de Disciplinas</strong></h5>
+                                            <h4 style="margin-top: 3%;">
+                                                <strong>#</strong>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="card shadow">
+                                        <div class="card-body statistic w-100">
+                                            <h6><strong>Número de Testes por Corrigir</strong></h5>
+                                            <h4 style="margin-top: 3%;">
+                                                <strong>#</strong>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Side -->
+                        <div class="col-lg-3">
+                            <h4 class="text-center heading mx-3 mt-3"><strong>Importante</strong><span><small> (por corrigir)</small></span></h4>
+                            <div class="card shadow mt-4">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <h5>Teste de #</h5>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <p>Disciplina: #</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12 d-flex justify-content-end">
+                                            <button class="btn btn-primary">Corrigir</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    </body>

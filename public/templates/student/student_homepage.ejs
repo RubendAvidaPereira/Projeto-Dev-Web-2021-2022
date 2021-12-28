@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<%- include("../include/student/student_head") %>
+
+    <!-- Content -->
+
+    <body>
+        <%- include("../include/student/student_navbar") %>
+
+        <!-- Footer -->
+        <%- include("../include/student/student_utils") %>
+            <div class="main">
+                <div class="container d-flex justify-content-between">
+                    <div class="col-lg-9 mt-4 mb-3">
+                        <h4 class="text-start heading mx-2"><strong>Bem-Vindo, <%= json_student[0].name %></strong></h4>
+                        <div class="row mt-4 mx-0 mb-4">
+                            <div class="col-lg-6">
+                                <div class="card shadow">
+                                    <div class="card-body statistic w-100">
+                                        <h6><strong>Número de Inscrições em Disciplinas</strong></h5>
+                                        <h4 style="margin-top: 3%;">
+                                            <strong><%= num_enrollements %></strong>
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="card shadow">
+                                    <div class="card-body statistic w-100">
+                                        <h6><strong>Número de Aulas Disponíveis</strong></h5>
+                                        <h4 style="margin-top: 3%;">
+                                            <strong><%= num_classes %></strong>
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Search Results -->
+                        <div class="row mx-0" style="margin-top: 3%;">
+                            <div class="col-lg-12">
+                                <div id="searchDiv" style="display: none;">
+                                    <div class="card shadow">
+                                        <div class="card-body statistic w-100">
+                                            <h5 class="heading" id="searchHeader"><strong></strong></h5>
+                                            <ul class="list-group list-group-flush" id="searchList">
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Course Classes and General Info -->
+                        <div class="row mx-0" style="margin-top: 3%;">
+                            <div class="col-lg-12">
+                                <div id="plus-info" style="display: none;">
+                                    <div class="card shadow">
+                                        <div class="card-body statistic w-100">
+                                            <div class="row d-flex justify-content-between mt-3 mb-4">
+                                                <div class="col-lg-6">
+                                                    <h4 class="heading" id="courseHeader"></h4>
+                                                </div>
+                                                <div class="col-lg-6 d-flex justify-content-end">
+                                                    <a class="btn btn-primary" id="courseLink">Abrir Disciplina</a>
+                                                </div>
+                                            </div>
+                                            <div class="row d-flex justify-content-between">
+                                                <div class="col-lg-6">
+                                                    <h5 class="heading ml-1 mt-1"><strong>Aulas</strong></h5>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <h6 id="professorName" class="mt-2"></h6>
+                                                </div>
+                                            </div>
+                                            <ul class="list-group list-group-flush " id="classes">
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-3 mt-4 mx-2 mb-3">
+                        <h4 class="text-center heading mx-2"><strong>Disciplinas Inscrito</strong></h4>
+                        <% if(num_enrollements == 0) { %>
+                            <h3 class="text-center heading mt-4 mx-2"><strong>Não está inscrito em disciplinas!</strong></h3>
+                        <% } else { %> 
+                            <% for(var i=0; i<num_enrollements; i++) { %>
+                                <div class="card shadow ml-3 mr-0 mt-4">
+                                    <div class="card-body w-100">
+                                        <h5>
+                                            <strong>
+                                                <%= json_courses[i][0].type %>
+                                            </strong>
+                                        </h5>
+                                        <div class="d-flex justify-content-end">
+                                            <button class="btn btn-primary" type="button"
+                                                id="btnCourse<%= json_courses[i][0].id %>">Ver +</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <script>
+                                    document.getElementById("btnCourse<%= json_courses[i][0].id %>").addEventListener("click", (event) => {
+                                        let classes = document.getElementById("classes")
+                                        let courseHeader = document.getElementById("courseHeader")
+                                        let professorName = document.getElementById("professorName")
+                                        let courseLink = document.getElementById("courseLink")
+                                        courseHeader.innerHTML = '<strong><%= json_courses[i][0].type %></strong>'
+                                        classes.innerHTML = `
+                                            <% for (var j=0; j<num_classes; j++) { %>
+                                                <% if (json_classes[0][j].course_id == json_courses[i][0].id) { %>
+                                                    <li class="list-group-item d-flex justify-content-between mt-2">
+                                                        <%= json_classes[0][j].title %>
+                                                    </li>
+                                                <% } %>
+                                            <% } %>
+                                        `
+
+                                        courseLink.href += "/activeEnrollements/<%= json_courses[i][0].id %>/<%= json_student[0].id %>"
+
+                                        professorName.innerHTML = `
+                                            <% for (var k=0; k<json_professors[0].length; k++) { %>
+                                                <% if (json_professors[i][0].id == json_courses[i][0].id_professor) { %>
+                                                    <strong>Professor:</strong> <%= json_professors[i][0].name %> | <strong>E-mail:</strong> <%= json_professors[i][0].email %>
+                                                <% } else {
+                                                    break
+                                                } %>
+                                            <% } %>
+                                        `
+                                        $("#plus-info").fadeIn()
+                                    })
+                                </script>
+                                <% } %>
+                            <% } %>
+                    </div>
+                </div>
+            </div>
+
+    </body>

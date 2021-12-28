@@ -333,7 +333,39 @@
             }            
         }
         else if (radios[1].checked) {
+            if (password == '' || email == ''){
+                loginWarning.classList.add('is-visible')
+                setTimeout(() => {
+                    $('#fillAll').fadeOut()
+                }, 2500)
+            }
+            else {
+                let authentication = {
+                'email': email,
+                'password': password
+                }
+                let auth = JSON.stringify(authentication)
+                
+                fetch('/professorLogin', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json', 
+                    },
+                    body: auth,
 
+                }).then( async (response) => {
+                    if (response.status == 403) {
+                        passwordWarning.classList.add('is-visible')
+                        setTimeout(() => {
+                        passwordWarning.classList.remove('is-visible')
+                        }, 2500)
+                    }
+                    else if (response.status == 200) {
+                        const auth = await response.json()
+                        window.location.href = ('/professorHomepage')
+                    }
+                }).catch((err) => { console.log(err) })
+            }            
         }
         
     })

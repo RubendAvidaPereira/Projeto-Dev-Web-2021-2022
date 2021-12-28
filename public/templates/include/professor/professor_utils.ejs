@@ -1,0 +1,60 @@
+<!-- Main footer for Application -->
+<footer>
+    <div class="row ml-3" style="margin-top: 1%;">
+       <div class="col-lg-3 d-flex-justify-content-start">
+           <a class="btn btn-lg btn-primary mx-4" href="#">Adicionar Disciplina <i class="bi bi-bookmark-plus"></i></a>
+        </div>
+       <div class="col-lg-3 d-flex justify-content-start">
+            <button class="btn btn-lg btn-primary" data-bs-target="#adicionarAula" data-bs-toggle="dropdown">Adicionar Aula <i class="bi bi-bookmark-plus"></i></button>
+            <ul class="dropdown-menu">
+                <li><a href="#">Exemplo</a></li>
+                <li><a href="#">Exemplo</a></li>
+                <li><a href="#">Exemplo</a></li>
+                <li><a href="#">Exemplo</a></li>
+            </ul>
+        </div>
+       <div class="col-lg-6 d-flex justify-content-end">
+            <div class="btn-group dropup mx-3 mr-5">
+                <button type="button" class="btn btn-lg btn-primary" data-bs-toggle="dropdown" aria-expanded="false">
+                    <%= json_professor[0].name %>
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Perfil <i class="bi bi-person"></i></i></a></li>
+                    <hr style="border: 0.02rem solid">
+                    <li><a href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout <i class="bi bi-door-open"></i></a></li>
+                </ul>
+            </div>
+       </div> 
+    </div>
+
+
+<!-- Logout Modal -->
+<div class="modal fade" id="logoutModal" aria-labelledby="logoutModal" aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h4 class="heading mx-2 mt-2"><strong>Logout?</strong></h5>
+                <br>
+                <div class="row mt-3 d-flex justify-content-end">
+                    <div class="col-lg-6">
+                        <a class="btn btn-light w-100" data-bs-dismiss="modal">Fechar</a>
+                    </div>
+                    <div class="col-lg-6">
+                        <a class="btn btn-danger w-100" id="btnLogout">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let logout = document.getElementById('btnLogout')
+
+    logout.addEventListener("click", (req, res) => {
+        document.cookie = "token= ;";
+        location.reload()
+    })
+</script>
+</footer>

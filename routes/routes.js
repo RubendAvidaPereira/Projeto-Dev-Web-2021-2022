@@ -77,7 +77,7 @@ router.get('/studentHomepage', authenticate, async (req, res) => {
         })
     }
     if (num_enrollements != 0) {
-        res.render('student_homepage', {
+        res.render('student/student_homepage', {
             json_student,
             json_courses,
             json_classes,
@@ -92,7 +92,7 @@ router.get('/studentHomepage', authenticate, async (req, res) => {
 router.get('/studentProfile', authenticate, async (req, res) => {
     const json_student = await controller.getStudentProfile(req, res)
         
-    res.render('student_profile', {
+    res.render('student/student_profile', {
         json_student
     })
 })
@@ -104,7 +104,7 @@ router.get('/allCourses', authenticate, async (req, res) => {
     const json_courses = response.json_courses
     const json_enrollements = response.json_enrollements
 
-    res.render('all_courses', {
+    res.render('student/all_courses', {
         json_student,
         json_courses,
         json_enrollements
@@ -117,7 +117,7 @@ router.get('/activeEnrollements', authenticate, async (req, res) => {
     const json_student = response.json_student
     const json_courses = response.json_courses
     const json_enrollements = response.json_enrollements
-    res.render('active_enrollements', {
+    res.render('student/active_enrollements', {
         json_student,
         json_courses,
         json_enrollements
@@ -131,7 +131,7 @@ router.get('/activeEnrollements/:id_course/:id_student', authenticate, async (re
     const json_professor = response.json_professor
     const json_classes = response.json_classes
     const json_course = response.json_course
-    res.render('info_course', {
+    res.render('student/info_course', {
         json_student,
         json_professor,
         json_classes,
@@ -144,12 +144,25 @@ router.get('/activeEnrollements/:id_course/:id_student/test', authenticate, asyn
     const json_student = response.json_student
     const json_test = response.json_test
     
-    res.render('test', {
+    res.render('student/test', {
         json_student,
         json_test
     })
 })
 
+
+// =================================================================================================
+// =================================================================================================
+// Professor Homepage
+router.get('/professorHomepage', authenticate, async (req, res) => {
+    const response = await controller.getProfessorData(req, res)
+    const json_professor = response.json_professor
+
+    res.render('professor/professor_homepage', {
+        json_professor,
+        
+    })
+})
 
 // =================================================================================================
 // =================================================================================================

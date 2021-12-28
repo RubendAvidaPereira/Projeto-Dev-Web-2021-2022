@@ -1,0 +1,86 @@
+<!-- Main footer for Application -->
+<footer>
+    <div class="row ml-3" style="margin-top: 1%;">
+       <div class="col-lg-8">
+           <form id="search">
+               <input id="searchText" class="form-control form-control-lg mx-3" role="search" placeholder="Procure por disciplina...">
+            </form>
+       </div>
+       <div class="col-lg-4 d-flex justify-content-end">
+            <div class="btn-group dropup mx-3 mr-5">
+                <button type="button" class="btn btn-lg btn-primary" data-bs-toggle="dropdown" aria-expanded="false">
+                    <%= json_student[0].name %>
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="/studentProfile">Perfil <i class="bi bi-person"></i></i></a></li>
+                    <hr style="border: 0.02rem solid">
+                    <li><a href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout <i class="bi bi-door-open"></i></a></li>
+                </ul>
+            </div>
+       </div> 
+    </div>
+
+    <script>
+        let searchDiv = document.getElementById("searchDiv")
+        let search = document.getElementById("search")
+        
+        
+        search.addEventListener("submit", function(event) {
+            let postData = {
+                'searchText': $("#searchText").val()
+            }
+            let post = JSON.stringify(postData)
+            event.preventDefault()
+            console.log(post)
+            fetch(`/search`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: post,
+            }).then(async (response) => {
+                const data = await response.json()
+                let searchList = document.getElementById("searchList")
+                for (let i=0; i<data.length; i++) {
+                    searchList.innerHTML += `
+                        <li class="list-group-item border-0"><span class="bi bi-arrow-right-short"></span>&nbsp;<strong><a class="list-link" href="/activeEnrollements/${data[i].id}/<%= json_student[0].id %>">${data[i].type}</a></strong></li>
+                    `
+                }
+                $("#searchDiv").fadeIn()
+                $("#searchHeader").text(`Resultados: `)
+            })
+     
+        })
+    </script>
+
+
+<!-- Logout Modal -->
+<div class="modal fade" id="logoutModal" aria-labelledby="logoutModal" aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h4 class="heading mx-2 mt-2"><strong>Logout?</strong></h5>
+                <br>
+                <div class="row mt-3 d-flex justify-content-end">
+                    <div class="col-lg-6">
+                        <a class="btn btn-light w-100" data-bs-dismiss="modal">Fechar</a>
+                    </div>
+                    <div class="col-lg-6">
+                        <a class="btn btn-danger w-100" id="btnLogout">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let logout = document.getElementById('btnLogout')
+
+    logout.addEventListener("click", (req, res) => {
+        document.cookie = "token= ;";
+        location.reload()
+    })
+</script>
+</footer>

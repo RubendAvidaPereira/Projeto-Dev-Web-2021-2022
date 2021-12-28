@@ -651,3 +651,27 @@ exports.submitTest = async (req, res) => {
         return res.status(400).send({ error: err })
     }
 }
+
+// ===========================================================================================================================
+// ===========================================================================================================================
+// Get Professor Data
+exports.getProfessorData = async (req, res) => {
+    try {
+        
+        const getProfessor = await professors.findAll({
+            where: {
+                email: req.email
+            }
+        })
+        const JSON_professor = JSON.stringify(getProfessor)
+        const json_professor = JSON.parse(JSON_professor)
+
+        return {
+            json_professor,
+            
+        }
+
+    } catch (err) {
+        return res.status(400).send({ error: err })
+    }
+}
