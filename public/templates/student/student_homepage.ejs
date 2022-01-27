@@ -120,7 +120,7 @@
                                             <% } %>
                                         `
 
-                                        courseLink.href += "/activeEnrollements/<%= json_courses[i][0].id %>/<%= json_student[0].id %>"
+                                        courseLink.href = "/activeEnrollements/<%= json_courses[i][0].id %>/<%= json_student[0].id %>"
 
                                         professorName.innerHTML = `
                                             <% for (var k=0; k<json_professors[0].length; k++) { %>

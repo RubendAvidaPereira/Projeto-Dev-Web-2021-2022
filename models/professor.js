@@ -4,7 +4,7 @@ const database = require('../db')
 
 // Professors
 const professors = database.define('professors', {
-    id: { 
+    id: {
         type: sequelize.INTEGER,
         autoIncrement: true,
         allowNull: false,

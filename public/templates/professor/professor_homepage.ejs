@@ -20,7 +20,7 @@
                                         <div class="card-body statistic w-100">
                                             <h6><strong>Número de Alunos Inscritos</strong></h5>
                                             <h4 style="margin-top: 3%;">
-                                                <strong>#</strong>
+                                                <strong><%= num_students %></strong>
                                             </h4>
                                         </div>
                                     </div>
@@ -30,7 +30,7 @@
                                         <div class="card-body statistic w-100">
                                             <h6><strong>Número de Disciplinas</strong></h5>
                                             <h4 style="margin-top: 3%;">
-                                                <strong>#</strong>
+                                                <strong><%= num_courses %></strong>
                                             </h4>
                                         </div>
                                     </div>
@@ -40,7 +40,7 @@
                                         <div class="card-body statistic w-100">
                                             <h6><strong>Número de Testes por Corrigir</strong></h5>
                                             <h4 style="margin-top: 3%;">
-                                                <strong>#</strong>
+                                                <strong><%= num_submissions %></strong>
                                             </h4>
                                         </div>
                                     </div>
@@ -51,28 +51,27 @@
                         <!-- Side -->
                         <div class="col-lg-3">
                             <h4 class="text-center heading mx-3 mt-3"><strong>Importante</strong><span><small> (por corrigir)</small></span></h4>
+                            <% for (let i=0; i < num_submissions; i++) { %>
                             <div class="card shadow mt-4">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <h5>Teste de #</h5>
+                                            <h5>Teste de <%= json_submissions[i].student_name %></h5>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <p>Disciplina: #</p>
+                                            <p>Disciplina: <%= json_submissions[i].course_name %></p>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-12 d-flex justify-content-end">
-                                            <button class="btn btn-primary">Corrigir</button>
+                                            <a class="btn btn-primary" href="#">Corrigir</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-
-
+                            <% } %>
                         </div>
                     </div>
                 </div>
