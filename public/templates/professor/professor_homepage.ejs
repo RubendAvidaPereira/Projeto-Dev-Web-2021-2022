@@ -52,25 +52,27 @@
                         <div class="col-lg-3">
                             <h4 class="text-center heading mx-3 mt-3"><strong>Importante</strong><span><small> (por corrigir)</small></span></h4>
                             <% for (let i=0; i < num_submissions; i++) { %>
-                            <div class="card shadow mt-4">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <h5>Teste de <%= json_submissions[i].student_name %></h5>
+                                <% if (json_submissions[i].test_result <= 0) { %>
+                                    <div class="card shadow mt-4">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <h5>Teste de <%= json_submissions[i].student_name %></h5>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <p>Disciplina: <%= json_submissions[i].course_name %></p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-12 d-flex justify-content-end">
+                                                    <a class="btn btn-primary" href="#">Corrigir</a>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <p>Disciplina: <%= json_submissions[i].course_name %></p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-12 d-flex justify-content-end">
-                                            <a class="btn btn-primary" href="#">Corrigir</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                <% } %>
                             <% } %>
                         </div>
                     </div>

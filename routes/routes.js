@@ -63,6 +63,8 @@ router.get('/studentHomepage', authenticate, async (req, res) => {
    const num_enrollements = response.num_enrollements;
    const num_classes = response.num_classes;
 
+   console.log(`GET request - Student Homepage`);
+
    if (num_enrollements == 0) {
       res.render('student/student_homepage', {
          json_student,
@@ -86,6 +88,7 @@ router.get('/studentHomepage', authenticate, async (req, res) => {
 router.get('/studentProfile', authenticate, async (req, res) => {
    const json_student = await controller.getStudentProfile(req, res);
 
+   console.log(`GET request - Student Profile`);
    res.render('student/student_profile', {
       json_student,
    });
@@ -97,6 +100,8 @@ router.get('/allCourses', authenticate, async (req, res) => {
    const json_student = response.json_student;
    const json_courses = response.json_courses;
    const json_enrollements = response.json_enrollements;
+
+   console.log(`GET request - Student Courses`);
 
    res.render('student/all_courses', {
       json_student,
@@ -111,6 +116,9 @@ router.get('/activeEnrollements', authenticate, async (req, res) => {
    const json_student = response.json_student;
    const json_courses = response.json_courses;
    const json_enrollements = response.json_enrollements;
+
+   console.log(`GET request - Student Enrollements`);
+
    res.render('student/active_enrollements', {
       json_student,
       json_courses,
@@ -125,6 +133,8 @@ router.get('/activeEnrollements/:id_course/:id_student', authenticate, async (re
    const json_professor = response.json_professor;
    const json_classes = response.json_classes;
    const json_course = response.json_course;
+
+   console.log(`GET request - Student Enrolled Course`);
    res.render('student/info_course', {
       json_student,
       json_professor,
@@ -138,6 +148,8 @@ router.get('/activeEnrollements/:id_course/:id_student/test', authenticate, asyn
    const json_student = response.json_student;
    const json_test = response.json_test;
 
+   console.log(`GET request - Student Test`);
+
    res.render('student/test', {
       json_student,
       json_test,
@@ -149,6 +161,7 @@ router.get('/grades', authenticate, async (req, res) => {
    const json_student = response.json_student;
    const json_submission = response.json_submission;
 
+   console.log(`GET request - Student Grades`);
    res.render('student/grades', {
       json_student,
       json_submission,
@@ -167,6 +180,8 @@ router.get('/professorHomepage', authenticate, async (req, res) => {
    const num_submissions = response.num_submissions;
    const num_students = response.num_students;
 
+   console.log(`GET request - Professor Homepage`);
+
    res.render('professor/professor_homepage', {
       json_professor,
       json_courses,
@@ -184,10 +199,33 @@ router.get('/professorClasses', authenticate, async (req, res) => {
    const json_courses = response.json_courses;
    const num_courses = response.num_courses;
 
+   console.log(`GET request - Professor Classes`);
+
    res.render('professor/professor_classes', {
       json_professor,
       json_courses,
       num_courses,
+   });
+});
+
+// Professor +Info on a Class
+router.get('/professorClasses/:id_course', authenticate, async (req, res) => {
+   const response = await controller.getProfessorClassInfo(req, res);
+   const json_professor = response.json_professor;
+   const json_courses = response.json_courses;
+   const num_courses = response.num_courses;
+   const json_course = response.json_course;
+   const json_classes = response.json_classes;
+
+   console.log('GET request - + Info');
+   console.log(json_classes);
+
+   res.render('professor/professor_info_class', {
+      json_professor,
+      json_course,
+      json_courses,
+      num_courses,
+      json_classes,
    });
 });
 
@@ -215,5 +253,8 @@ router.post('/search', authenticate, controller.search);
 
 // Submit Test
 router.post('/submitTest/:id_test/:id_course', authenticate, controller.submitTest);
+
+// Edit Class
+router.post('/editClass/:id_class', authenticate, controller.editClass);
 
 module.exports = router;

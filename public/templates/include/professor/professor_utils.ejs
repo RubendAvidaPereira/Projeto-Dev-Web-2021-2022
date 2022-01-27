@@ -1,7 +1,7 @@
 <!-- Main footer for Application -->
 <footer>
     <div class="row ml-3" style="margin-top: 1%;">
-       <div class="col-lg-3 d-flex-justify-content-start">
+       <div class="col-lg-3 d-flex-justify-content-start" id="addCourse">
            <a class="btn btn-lg btn-primary mx-4" href="#">Adicionar Disciplina <i class="bi bi-bookmark-plus"></i></a>
         </div>
        <div class="col-lg-3 d-flex justify-content-start">
@@ -12,7 +12,7 @@
                 <% } %>
             </ul>
         </div>
-       <div class="col-lg-6 d-flex justify-content-end">
+       <div class="col-lg-6 d-flex justify-content-end" id="addClass">
             <div class="btn-group dropup mx-3 mr-5">
                 <button type="button" class="btn btn-lg btn-primary" data-bs-toggle="dropdown" aria-expanded="false">
                     <%= json_professor[0].name %>

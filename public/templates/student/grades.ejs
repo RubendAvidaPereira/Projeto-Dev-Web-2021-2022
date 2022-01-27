@@ -31,16 +31,16 @@
                         <tbody>
                             <% for (i=0; i<json_submission.length; i++) { %>
                                 <tr style="height: 3.5rem !important;">
-                                    <td class="mt-3"><%= json_submission[i].course_name %></td>
+                                    <td><%= json_submission[i].course_name %></td>
                                     <% if (json_submission[i].test_result == null || json_submission[i].test_result == 0) { %>
-                                        <td class="text-center mt-3 ">Ainda não Corrigido</td>
-                                        <td class="text-center mt-3 "><i class="bi bi-hourglass-split"></i></td>
+                                        <td class="text-center">Ainda não Corrigido</td>
+                                        <td class="text-center"><i class="bi bi-hourglass-split"></i></td>
                                     <% } else { %>
-                                        <td><%= json_submission[i].test_result %></td>
+                                        <td class="text-center"><%= json_submission[i].test_result %></td>
                                         <% if (json_submission[i].test_result > 10) { %>
-                                            <td><strong>Aprovado <i class="bi bi-check"></i></strong></td>
+                                            <td class="text-center text-success"><strong>Aprovado <i class="bi bi-check"></i></strong></td>
                                         <% } else { %>
-                                            <td><strong>Não Aprovado <i class="bi bi-x"></i></strong></td>
+                                            <td class="text-center text-danger"><strong>Reprovado <i class="bi bi-x"></i></strong></td>
                                         <% } %>
                                     <% } %>
                                     </tr>

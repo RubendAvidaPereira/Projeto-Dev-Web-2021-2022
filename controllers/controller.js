@@ -420,6 +420,7 @@ exports.activeEnrollements = async (req, res) => {
    }
 };
 
+// Student +Info Course
 exports.infoCourse = async (req, res) => {
    const studentID = req.params.id_student;
    const courseID = req.params.id_course;
@@ -536,6 +537,7 @@ exports.infoCourse = async (req, res) => {
    }
 };
 
+// Search
 exports.search = async (req, res) => {
    try {
       const search = req.body.searchText;
@@ -570,6 +572,7 @@ exports.search = async (req, res) => {
    }
 };
 
+// Get Test
 exports.getTest = async (req, res) => {
    try {
       // Get relevant Student Data
@@ -602,6 +605,7 @@ exports.getTest = async (req, res) => {
    }
 };
 
+// Submit Test
 exports.submitTest = async (req, res) => {
    try {
       const testForm = req.body;
@@ -658,6 +662,7 @@ exports.submitTest = async (req, res) => {
    }
 };
 
+// Get Student Grades
 exports.getGrades = async (req, res) => {
    try {
       // Get relevant Student Data
@@ -682,8 +687,6 @@ exports.getGrades = async (req, res) => {
       });
       const JSON_submission = JSON.stringify(getSubmission);
       const json_submission = JSON.parse(JSON_submission);
-      console.log(json_submission);
-
       return {
          json_student,
          json_submission,
@@ -824,3 +827,57 @@ exports.getProfessorClasses = async (req, res) => {
       return res.status(400).send({ error: err });
    }
 };
+
+exports.getProfessorClassInfo = async (req, res) => {
+   try {
+      // Get relevant professor data
+      const getProfessor = await professors.findAll({
+         where: {
+            email: req.email,
+         },
+         attributes: {
+            exclude: ['password', 'createdAt', 'updatedAt'],
+         },
+      });
+      const JSON_professor = JSON.stringify(getProfessor);
+      const json_professor = JSON.parse(JSON_professor);
+
+      // Get Classes and Course
+      const getCourse = await courses.findOne({
+         where: {
+            id: req.params.id_course,
+         },
+      });
+      const JSON_course = JSON.stringify(getCourse);
+      const json_course = JSON.parse(JSON_course);
+
+      const getCourses = await courses.findAll({
+         where: {
+            id_professor: json_professor[0].id,
+         },
+      });
+      const JSON_courses = JSON.stringify(getCourses);
+      const json_courses = JSON.parse(JSON_courses);
+      const num_courses = json_courses.length;
+
+      const getClasses = await classes.findAll({
+         where: {
+            course_id: json_course.id,
+         },
+      });
+      const JSON_classes = JSON.stringify(getClasses);
+      const json_classes = JSON.parse(JSON_classes);
+
+      return {
+         json_professor,
+         json_course,
+         json_courses,
+         num_courses,
+         json_classes,
+      };
+   } catch (err) {
+      return res.status(400).send({ error: err });
+   }
+};
+
+exports.editClass = async (req, res) => {};

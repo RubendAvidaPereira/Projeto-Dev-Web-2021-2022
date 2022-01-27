@@ -24,7 +24,7 @@
     <script>
         let searchDiv = document.getElementById("searchDiv")
         let search = document.getElementById("search")
-        
+        const history = []
         
         search.addEventListener("submit", function(event) {
             let postData = {
@@ -42,14 +42,14 @@
             }).then(async (response) => {
                 const data = await response.json()
                 let searchList = document.getElementById("searchList")
-                for (let i=0; i<data.length; i++) {   
-                    if (!history.includes(data[i].type)) {
+                for (let i=0; i<data.length; i++) {
+                    if (!history.includes(data[i].id)) {
+                        history.push(data[i].id)
                         searchList.innerHTML += `
-                            <li class="list-group-item border-0"><span class="bi bi-arrow-right-short"></span>&nbsp;<strong><a class="list-link" href="/activeEnrollements/${data[i].id}/<%= json_student[0].id %>">${data[i].type}</a></strong></li>
-                         `
-                         console.log(history)
-                        }
-                        
+                        <li class="list-group-item border-0"><span class="bi bi-arrow-right-short"></span>&nbsp;<strong><a class="list-link" href="/activeEnrollements/${data[i].id}/<%= json_student[0].id %>">${data[i].type}</a></strong></li>
+                        `
+                        console.log("aqui")
+                    }
                 }
                 $("#searchDiv").fadeIn()
                 $("#searchHeader").text(`Resultados: `)
