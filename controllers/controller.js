@@ -649,7 +649,7 @@ exports.submitTest = async (req, res) => {
             student_name: json_student[0].name,
             student_email: json_student[0].email,
             course_name: json_course[0].type,
-            test_result: null,
+            test_result: -1,
          });
          return res.status(201).send({ message: 'Test Submited!' });
       } else {
@@ -795,6 +795,7 @@ exports.getProfessorData = async (req, res) => {
    }
 };
 
+// Get Courses Lectured
 exports.getProfessorClasses = async (req, res) => {
    try {
       // Get relevant professor data
@@ -828,6 +829,7 @@ exports.getProfessorClasses = async (req, res) => {
    }
 };
 
+// Get Course Info
 exports.getProfessorClassInfo = async (req, res) => {
    try {
       // Get relevant professor data
@@ -880,6 +882,7 @@ exports.getProfessorClassInfo = async (req, res) => {
    }
 };
 
+// Edit Class in Course
 exports.editClass = async (req, res) => {
    try {
       let editedSummary = req.body.postData;
@@ -899,6 +902,7 @@ exports.editClass = async (req, res) => {
    }
 };
 
+// Add Class to Course
 exports.addClass = async (req, res) => {
    try {
       let addClassData = req.body;
@@ -915,6 +919,78 @@ exports.addClass = async (req, res) => {
       return res.status(201).send('Aula foi Criada com Sucesso');
    } catch (err) {
       console.log(err);
+      return res.status(400).send({ error: err });
+   }
+};
+
+exports.getStudents = async (req, res) => {
+   try {
+      // Get relevant professor data
+      const getProfessor = await professors.findAll({
+         where: {
+            email: req.email,
+         },
+         attributes: {
+            exclude: ['password', 'createdAt', 'updatedAt'],
+         },
+      });
+      const JSON_professor = JSON.stringify(getProfessor);
+      const json_professor = JSON.parse(JSON_professor);
+
+      const getCourses = await courses.findAll({
+         where: {
+            id_professor: json_professor[0].id,
+         },
+      });
+      const JSON_courses = JSON.stringify(getCourses);
+      const json_courses = JSON.parse(JSON_courses);
+      const num_courses = json_courses.length;
+
+      const myDict = {};
+      const course_id_list = [];
+      for (let i = 0; i < num_courses; i++) {
+         course_id_list.push(json_courses[i].id);
+      }
+
+      const getEnrollements = await enrollements.findAll({
+         where: {
+            id_course: {
+               [Op.or]: course_id_list,
+            },
+         },
+      });
+      const JSON_enrollements = JSON.stringify(getEnrollements);
+      const json_enrollements = JSON.parse(JSON_enrollements);
+
+      const student_id_list = [];
+      for (let j = 0; j < getEnrollements.length; j++) {
+         student_id_list.push(json_enrollements[j].id_student);
+      }
+      console.log(student_id_list);
+      let new_student_list = [...new Set(student_id_list)];
+      console.log(new_student_list);
+
+      const getStudents = await students.findAll({
+         where: {
+            id: {
+               [Op.or]: new_student_list,
+            },
+         },
+         attributes: {
+            exclude: ['password', 'createdAt', 'updatedAt'],
+         },
+      });
+      const JSON_students = JSON.stringify(getStudents);
+      const json_students = JSON.parse(JSON_students);
+
+      return {
+         json_professor,
+         json_courses,
+         num_courses,
+         json_students,
+         json_enrollements,
+      };
+   } catch (err) {
       return res.status(400).send({ error: err });
    }
 };

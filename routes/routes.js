@@ -228,6 +228,26 @@ router.get('/professorClasses/:id_course', authenticate, async (req, res) => {
    });
 });
 
+// Professor Students
+router.get('/professorStudents', authenticate, async (req, res) => {
+   const response = await controller.getStudents(req, res);
+   const json_professor = response.json_professor;
+   const json_courses = response.json_courses;
+   const num_courses = response.num_courses;
+   const json_students = response.json_students;
+   const json_enrollements = response.json_enrollements;
+
+   console.log('GET request - Student List');
+
+   res.render('professor/student_list', {
+      json_professor,
+      json_courses,
+      num_courses,
+      json_students,
+      json_enrollements,
+   });
+});
+
 // =================================================================================================
 // =================================================================================================
 // POST routes
