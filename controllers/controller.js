@@ -994,3 +994,21 @@ exports.getStudents = async (req, res) => {
       return res.status(400).send({ error: err });
    }
 };
+
+// Add Course
+exports.addCourse = async (req, res) => {
+   try {
+      let postData = req.body;
+
+      const newCourse = await courses.create({
+         type: postData.addName,
+         id_professor: postData.professorId,
+      });
+      return res.status(201).send('Disciplina Adicionada');
+   } catch (err) {
+      return res.status(400).send({ error: err });
+   }
+};
+
+// Add Test
+exports.addTest = async (req, res) => {};

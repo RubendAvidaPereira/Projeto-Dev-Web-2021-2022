@@ -279,4 +279,10 @@ router.post('/editClass/:id_class', authenticate, controller.editClass);
 // Add Class
 router.post('/addClass/:id_course', authenticate, controller.addClass);
 
+// Add Course
+router.post('/addCourse/', authenticate, controller.addCourse);
+
+// Add Test
+router.post('addTest/:id_course', authenticate, controller.addTest);
+
 module.exports = router;
