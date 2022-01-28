@@ -880,4 +880,41 @@ exports.getProfessorClassInfo = async (req, res) => {
    }
 };
 
-exports.editClass = async (req, res) => {};
+exports.editClass = async (req, res) => {
+   try {
+      let editedSummary = req.body.postData;
+
+      const editSummary = await classes.findOne({
+         where: {
+            id: req.params.id_class,
+         },
+      });
+      console.log(editSummary);
+
+      editSummary.summary = editedSummary;
+      await editSummary.save();
+      return res.status(201).send('Aula Alterada com Sucesso');
+   } catch (err) {
+      return res.status(400).send({ error: err });
+   }
+};
+
+exports.addClass = async (req, res) => {
+   try {
+      let addClassData = req.body;
+      console.log(addClassData);
+
+      const addClass = await classes.create({
+         title: addClassData.addTitle,
+         summary: addClassData.addSummary,
+         class_date: addClassData.addDate,
+         course_id: req.params.id_course,
+      });
+      console.log(addClass);
+
+      return res.status(201).send('Aula foi Criada com Sucesso');
+   } catch (err) {
+      console.log(err);
+      return res.status(400).send({ error: err });
+   }
+};

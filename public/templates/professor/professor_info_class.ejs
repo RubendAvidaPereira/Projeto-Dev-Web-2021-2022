@@ -4,29 +4,46 @@
 <!-- Content -->
 
 <body>
-   <%- include("../include/professor/professor_navbar") %>
-
-   <!-- Footer -->
-   <%- include("../include/professor/professor_utils") %>
-
-   <div class="main">
-      <div class="container w-100">
-         <div class="row d-flex justify-content-start mx-3 mt-4">
-            <div class="col-lg-9">
-               <h3 class="heading"><%= json_course.type %></h3>
-            </div>
-            <div class="col-lg-3 d-flex justify-content-end align-items-center">
-               <a class="btn btn-lg btn-primary" style="border-radius: 10%;" href="#" data-bs-toggle="modal" data-bs-target="#addClass"
-                  ><i class="bi bi-plus-lg"></i> Adicionar Aula</a
-               >
+    
+    <%- include("../include/professor/professor_navbar") %>
+    
+    <!-- Footer -->
+    <%- include("../include/professor/professor_utils") %>
+    
+    <div class="main">
+        <div class="container w-100">
+            <div class="row d-flex justify-content-start mx-3 mt-4">
+                <div class="col-lg-9">
+                    <h3 class="heading"><%= json_course.type %></h3>
+                </div>
+                <div class="col-lg-3 d-flex justify-content-end align-items-center">
+                    <button class="btn btn-lg btn-primary" 
+                        type="button" 
+                        style="border-radius: 10%;" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#addClass<%= json_course.id %>"><i class="bi bi-plus-lg"></i> Adicionar Aula</button>
+                </div>
             </div>
          </div>
+
          <div class="row mt-3 w-100">
              <% for(let i=0;i<json_classes.length; i++) { %>
-                <div class="col-lg-12 mt-2">
+                <div class="col-lg-12 mt-2 d-flex justify-content-center">
                     <div class="card shadow mt-2 mb-2 mx-4 w-100">
                         <div class="card-body statistic w-100">
-                            <h3><%= json_classes[i].title %></h3> 
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <h3><%= json_classes[i].title %></h3> 
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="alert alert-sm alert-success" id="editSuccess" style="display: none;" role="alert">
+                                        A Aula foi editada com Sucesso
+                                    </div>
+                                    <div class="alert alert-sm alert-danger" id="editFailed" style="display: none;" role="alert">
+                                        Não foi possível editar a Aula
+                                    </div>
+                                </div>
+                            </div>
                             <hr>
                             <div class="row">
                                 <div class="col-lg-8">
@@ -49,9 +66,35 @@
                                             })
 
                                             document.getElementById("submitClass<%= json_classes[i].id %>").addEventListener("click", () => {
-                                                postURL = "/editClass/<%= json_classes[i].id %>"
-                                                postData = $("#summary<%= json_classes[i].id %>").val()
-                                                console.log(postData)
+                                                const postURL = "/editClass/<%= json_classes[i].id %>"
+                                                const postData = $("#summary<%= json_classes[i].id %>").val()
+
+                                                let POST = {
+                                                    'postData': postData
+                                                }
+                                                let post = JSON.stringify(POST)
+                                                
+                                                console.log(post)
+                                                fetch(postURL, {
+                                                    method: 'POST',
+                                                    headers: {
+                                                        'Content-Type': 'application/json',
+                                                    },
+                                                    body: post,
+                                                }).then((response) => {
+                                                    if (response.status == 201) {
+                                                        $("#editSuccess").fadeIn()
+                                                        setTimeout(() => {
+                                                            $("#editSuccess").fadeOut()
+                                                        }, 1500)
+                                                    }
+                                                    if (response.status == 400){
+                                                        $("#editFailed").fadeIn()
+                                                        setTimeout(() => {
+                                                            $("#editFailed").fadeOut()
+                                                        }, 1500)
+                                                    }
+                                                })
                                             })
                                         </script>
                                     </ul>
@@ -64,5 +107,75 @@
              <% } %>
          </div>
       </div>
-   </div>
+</div>
+
+<!-- Add Class Modal -->
+<div class="modal fade" id="addClass<%= json_course.id %>" tabindex="-1" aria-labelledby="addClassLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title heading" id="exampleModalLabel">Adicionar Aula</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addClassForm">
+                    <div class="row mx-3">
+                        <div class="col-lg-6">
+                            <label for="addClassTitle"><strong>Título</strong></label>
+                            <input type="text" id="addClassTitle" class="form-control mt-2">
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="addClassDate"><strong>Data</strong></label>
+                            <input type="date" id="addClassDate" class="form-control mt-2">
+                        </div>
+                    </div>
+                    <div class="row mx-3 mt-3">
+                        <div class="col-lg-12">
+                            <label for="addClassSummary"><strong>Sumário</strong></label>
+                            <textarea rows="5" class="form-control mt-2" id="addClassSummary"></textarea>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end mt-4 mx-3">
+                        <button type="submit" class="btn btn-lg btn-primary mx-2 mr-3">Adicionar Aula</button>
+                    </div>
+                </form>
+                <script>
+                    const addClassForm = document.getElementById("addClassForm")
+
+                    addClassForm.addEventListener("submit", () => {
+                        let title = $("#addClassTitle").val()
+                        let date =  $("#addClassDate").val()
+                        let summary = $("#addClassSummary").val()
+
+                        const addClassURL = "/addClass/<%= json_course.id %>"
+
+                        let POST = {
+                            'addTitle': title,
+                            'addDate': date,
+                            'addSummary': summary
+                        }
+                        let post = JSON.stringify(POST)
+                        
+                        fetch(addClassURL, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: post,
+                        }).then((response) => {
+                            if (response.status == 201) {
+                                location.reload()
+                            }
+                            if (response.status == 400){
+                                location.reload()
+                            }
+                        })
+                    })
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 </body>

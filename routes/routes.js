@@ -218,7 +218,6 @@ router.get('/professorClasses/:id_course', authenticate, async (req, res) => {
    const json_classes = response.json_classes;
 
    console.log('GET request - + Info');
-   console.log(json_classes);
 
    res.render('professor/professor_info_class', {
       json_professor,
@@ -256,5 +255,8 @@ router.post('/submitTest/:id_test/:id_course', authenticate, controller.submitTe
 
 // Edit Class
 router.post('/editClass/:id_class', authenticate, controller.editClass);
+
+// Add Class
+router.post('/addClass/:id_course', authenticate, controller.addClass);
 
 module.exports = router;
