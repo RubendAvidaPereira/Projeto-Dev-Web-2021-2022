@@ -263,6 +263,26 @@ router.get('/professorTest/addTest/:id_course', authenticate, async (req, res) =
    });
 });
 
+// Get All Tests
+router.get('/professorTestArquive', authenticate, async (req, res) => {
+   const response = await controller.getAllTests(req, res);
+
+   console.log('GET request - Get All Tests');
+});
+
+router.get('/professorTest/editTest/:id_test', authenticate, async (req, res) => {
+   const response = await controller.getTestToEdit(req, res);
+   const json_test = response.json_test;
+   const json_course = response.json_course;
+
+   console.log('GET request - Edit Test');
+
+   res.render('professor/edit_test', {
+      json_test,
+      json_course,
+   });
+});
+
 // =================================================================================================
 // =================================================================================================
 // POST routes
@@ -299,5 +319,11 @@ router.post('/addCourse', authenticate, controller.addCourse);
 
 // Add Test
 router.post('/addTest/:id_course', authenticate, controller.addTest);
+
+// Edit Test
+router.post('/editTest/:id_test', authenticate, controller.editTest);
+
+// Evaluate Test
+router.post('/evaluateTest/:id_test', authenticate, controller.evaluateTest);
 
 module.exports = router;

@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: true })); // Parse de conteudo do tipo ap
 app.use(express.static('public')); // Faz uso da pasta public
 
 /**
- * Manipulação dos headers quando acontece os requests
+ * Header Manipulation
  */
 app.use(
    cors({
@@ -30,7 +30,7 @@ app.use(
 
 // ===========================================================================================================================
 // ===========================================================================================================================
-// Diretorio das Views
+// Views Directory
 app.set('views', path.join(__dirname, '/public/templates'));
 
 app.set('view engine', 'ejs');

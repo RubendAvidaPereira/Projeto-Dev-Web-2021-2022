@@ -15,7 +15,7 @@
             <div class="row d-flex justify-content-start mx-3 mt-4">
                 <% if (!json_test) { %>
                     <div class="col-lg-6">
-                        <h3 class="heading"><%= json_course.type %></h3>
+                        <h3 class="heading"><strong><%= json_course.type %></strong></h3>
                     </div>
                     <div class="col-lg-3 d-flex justify-content-end align-items-center">
                         <a class="btn btn-lg btn-primary" 
@@ -25,12 +25,12 @@
                     </div>
                 <% } else {  %>
                     <div class="col-lg-6">
-                        <h3 class="heading"><%= json_course.type %></h3>
+                        <h3 class="heading"><strong><%= json_course.type %></strong></h3>
                     </div>
                     <div class="col-lg-3 d-flex justify-content-end align-items-center">
                         <a class="btn btn-lg btn-primary" 
                             type="button" 
-                            style="border-radius: 10%;" href="#"><i class="bi bi-pencil"></i> Editar Teste</a>
+                            style="border-radius: 10%;" href="/professorTest/editTest/<%= json_test.id %>"><i class="bi bi-pencil"></i> Editar Teste</a>
                     </div>
                 <% } %>
                 <div class="col-lg-3 d-flex justify-content-end align-items-center">
@@ -50,7 +50,7 @@
                         <div class="card-body statistic w-100">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <h3><%= json_classes[i].title %></h3> 
+                                    <h3 class="heading"><strong><%= json_classes[i].title %></strong></h3> 
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="alert alert-sm alert-success" id="editSuccess" style="display: none;" role="alert">
@@ -136,6 +136,11 @@
             </div>
             <div class="modal-body">
                 <form>
+                    <div class="row mx-3 mb-2">
+                        <div class="alert alert-warning" id="classNotAdded">
+                            Aula não Adicionada
+                        </div>
+                    </div>
                     <div class="row mx-3">
                         <div class="col-lg-6">
                             <label for="addClassTitle"><strong>Título</strong></label>
@@ -184,7 +189,10 @@
                                 location.reload()
                             }
                             else {
-                                alert("Erro - Não Adicionado")
+                                $("#classNotAdded").fadeIn()
+                                setTimeout(()=> {
+                                    $("#classNotAdded").fadeOut()
+                                }, 2000)
                             }
                         })
                     })

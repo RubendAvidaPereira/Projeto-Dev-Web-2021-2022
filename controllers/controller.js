@@ -901,7 +901,6 @@ exports.editClass = async (req, res) => {
             id: req.params.id_class,
          },
       });
-      console.log(editSummary);
 
       editSummary.summary = editedSummary;
       await editSummary.save();
@@ -923,7 +922,6 @@ exports.addClass = async (req, res) => {
          class_date: addClassData.addDate,
          course_id: req.params.id_course,
       });
-      console.log(addClass);
 
       return res.status(201).send('Aula foi Criada com Sucesso');
    } catch (err) {
@@ -975,9 +973,7 @@ exports.getStudents = async (req, res) => {
       for (let j = 0; j < getEnrollements.length; j++) {
          student_id_list.push(json_enrollements[j].id_student);
       }
-      console.log(student_id_list);
       let new_student_list = [...new Set(student_id_list)];
-      console.log(new_student_list);
 
       const getStudents = await students.findAll({
          where: {
@@ -1008,7 +1004,6 @@ exports.getStudents = async (req, res) => {
 exports.addCourse = async (req, res) => {
    try {
       let postData = req.body;
-      console.log('been here');
 
       const newCourse = await courses.create({
          type: postData.addName,
@@ -1046,7 +1041,7 @@ exports.addTest = async (req, res) => {
       const post = req.body;
       let today = new Date();
       let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-      console.log(req.body);
+
       // Create Test
       const addTest = await tests.create({
          id_course: req.params.id_course,
@@ -1061,3 +1056,60 @@ exports.addTest = async (req, res) => {
       return res.status(400).send({ error: err });
    }
 };
+
+// Get Test to Edit
+exports.getTestToEdit = async (req, res) => {
+   try {
+      const getTest = await tests.findOne({
+         where: {
+            id: req.params.id_test,
+         },
+      });
+      const JSON_test = JSON.stringify(getTest);
+      const json_test = JSON.parse(JSON_test);
+
+      const getCourse = await courses.findOne({
+         where: {
+            id: json_test.id_course,
+         },
+      });
+      const JSON_course = JSON.stringify(getCourse);
+      const json_course = JSON.parse(JSON_course);
+
+      return {
+         json_test,
+         json_course,
+      };
+   } catch (err) {
+      return res.status(400).send({ error: err });
+   }
+};
+
+// Edit Test
+exports.editTest = async (req, res) => {
+   try {
+      let editedTest = req.body.post;
+
+      const editTest = await tests.findOne({
+         where: {
+            id: req.params.id_test,
+         },
+      });
+
+      editTest.question_1 = editTest.question1;
+      editTest.question_2 = editTest.question2;
+      editTest.question_3 = editTest.question3;
+      editTest.question_4 = editTest.question4;
+
+      await editTest.save();
+      return res.status(201).send('Teste Alterado com Sucesso');
+   } catch (err) {
+      return res.status(400).send({ error: err });
+   }
+};
+
+// Get All Tests
+exports.getAllTests = async (req, res) => {};
+
+// Evaluate Tests
+exports.evaluateTest = async (req, res) => {};

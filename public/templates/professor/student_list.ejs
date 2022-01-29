@@ -13,7 +13,7 @@
       <div class="container">
           <div class="row mt-4 mx-3">
               <div class="col-lg-12">
-                  <h2 class="heading">Lista de Alunos</h2>
+                  <h2 class="heading"><strong>Lista de Alunos</strong></h2>
                   <small>Aqui pode encontrar os alunos inscritos nas suas disciplinas.</small>
               </div>
           </div>
@@ -23,23 +23,23 @@
                     <div class="col-lg-12 mx-3 mt-2 mb-2">
                         <div class="card shadow">
                             <div class="card-body statistic w-100">
-                                <div class="row mt-1">
-                                    <div class="col-lg-6">
-                                        <h4><%= json_students[i].name %></4>
+                                <div class="row mt-2 mx-2">
+                                    <div class="col-lg-6 d-flex align-items-center">
+                                        <h3 class="heading"><strong><%= json_students[i].name %></strong></h3>
                                     </div>
-                                    <div class="col-lg-6 d-flex justify-content-end"><h4><%= json_students[i].email %></h4></div>
+                                    <div class="col-lg-6 d-flex justify-content-end align-items-center"><h5><i class="bi bi-envelope"></i> &nbsp;<%= json_students[i].email %></h5></div>
                                 </div>
-                                <hr>
-                                <div class="row mt-2">
+                                <hr class="mx-3">
+                                <div class="row mt-2 mx-2">
                                     <h5 class="heading"><strong>Disciplinas Inscrito</strong></h5>
                                     <ul class="list-group list-group-flush mx-3">
                                         <% for (let j=0; j<json_enrollements.length;j++) { %>
                                             <% if (json_students[i].id == json_enrollements[j].id_student) { %>
-                                            <% for (let k=0; k<num_courses;k++) { %>
-                                                <% if (json_enrollements[j].id_course == json_courses[k].id) { %>
-                                                    <li class="list-group-item border-0"><%= json_courses[k].type %></li>
+                                                <% for (let k=0; k<num_courses;k++) { %>
+                                                    <% if (json_enrollements[j].id_course == json_courses[k].id) { %>
+                                                        <li class="list-group-item border-0"><%= json_courses[k].type %></li>
+                                                    <% } %>
                                                 <% } %>
-                                            <% } %>
                                             <% } %>
                                         <% } %>
 
