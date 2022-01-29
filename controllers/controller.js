@@ -870,12 +870,21 @@ exports.getProfessorClassInfo = async (req, res) => {
       const JSON_classes = JSON.stringify(getClasses);
       const json_classes = JSON.parse(JSON_classes);
 
+      const getTest = await tests.findOne({
+         where: {
+            id_course: json_course.id,
+         },
+      });
+      const JSON_test = JSON.stringify(getTest);
+      const json_test = JSON.parse(JSON_test);
+
       return {
          json_professor,
          json_course,
          json_courses,
          num_courses,
          json_classes,
+         json_test,
       };
    } catch (err) {
       return res.status(400).send({ error: err });
@@ -905,8 +914,8 @@ exports.editClass = async (req, res) => {
 // Add Class to Course
 exports.addClass = async (req, res) => {
    try {
-      let addClassData = req.body;
-      console.log(addClassData);
+      console.log('Been here');
+      const addClassData = req.body;
 
       const addClass = await classes.create({
          title: addClassData.addTitle,
@@ -999,6 +1008,7 @@ exports.getStudents = async (req, res) => {
 exports.addCourse = async (req, res) => {
    try {
       let postData = req.body;
+      console.log('been here');
 
       const newCourse = await courses.create({
          type: postData.addName,
@@ -1010,5 +1020,44 @@ exports.addCourse = async (req, res) => {
    }
 };
 
+// Get Test Professor
+exports.getProfessorTest = async (req, res) => {
+   try {
+      // Get Test
+      const getCourse = await courses.findOne({
+         where: {
+            id: req.params.id_course,
+         },
+      });
+      const JSON_course = JSON.stringify(getCourse);
+      const json_course = JSON.parse(JSON_course);
+
+      return {
+         json_course,
+      };
+   } catch (err) {
+      return res.status(400).send({ error: err });
+   }
+};
+
 // Add Test
-exports.addTest = async (req, res) => {};
+exports.addTest = async (req, res) => {
+   try {
+      const post = req.body;
+      let today = new Date();
+      let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+      console.log(req.body);
+      // Create Test
+      const addTest = await tests.create({
+         id_course: req.params.id_course,
+         question_1: post.question1,
+         question_2: post.question2,
+         question_3: post.question3,
+         question_4: post.question4,
+         test_date: date,
+      });
+      return res.status(201);
+   } catch (err) {
+      return res.status(400).send({ error: err });
+   }
+};

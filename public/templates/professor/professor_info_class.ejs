@@ -13,15 +13,32 @@
     <div class="main">
         <div class="container w-100">
             <div class="row d-flex justify-content-start mx-3 mt-4">
-                <div class="col-lg-9">
-                    <h3 class="heading"><%= json_course.type %></h3>
-                </div>
+                <% if (!json_test) { %>
+                    <div class="col-lg-6">
+                        <h3 class="heading"><%= json_course.type %></h3>
+                    </div>
+                    <div class="col-lg-3 d-flex justify-content-end align-items-center">
+                        <a class="btn btn-lg btn-primary" 
+                            type="button" 
+                            style="border-radius: 10%;" 
+                            href="/professorTest/addTest/<%= json_course.id %>"><i class="bi bi-plus-lg"></i> Adicionar Teste</a>
+                    </div>
+                <% } else {  %>
+                    <div class="col-lg-6">
+                        <h3 class="heading"><%= json_course.type %></h3>
+                    </div>
+                    <div class="col-lg-3 d-flex justify-content-end align-items-center">
+                        <a class="btn btn-lg btn-primary" 
+                            type="button" 
+                            style="border-radius: 10%;" href="#"><i class="bi bi-pencil"></i> Editar Teste</a>
+                    </div>
+                <% } %>
                 <div class="col-lg-3 d-flex justify-content-end align-items-center">
                     <button class="btn btn-lg btn-primary" 
-                        type="button" 
-                        style="border-radius: 10%;" 
-                        data-bs-toggle="modal" 
-                        data-bs-target="#addClass<%= json_course.id %>"><i class="bi bi-plus-lg"></i> Adicionar Aula</button>
+                    type="button" 
+                    style="border-radius: 10%;" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#addClass<%= json_course.id %>"><i class="bi bi-plus-lg"></i> Adicionar Aula</button>
                 </div>
             </div>
          </div>
@@ -118,7 +135,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="addClassForm">
+                <form>
                     <div class="row mx-3">
                         <div class="col-lg-6">
                             <label for="addClassTitle"><strong>Título</strong></label>
@@ -136,25 +153,25 @@
                         </div>
                     </div>
                     <div class="d-flex justify-content-end mt-4 mx-3">
-                        <button type="submit" class="btn btn-lg btn-primary mx-2 mr-3">Adicionar Aula</button>
+                        <button type="button" id="addClassForm" class="btn btn-lg btn-primary mx-2 mr-3">Adicionar Aula</button>
                     </div>
                 </form>
                 <script>
                     const addClassForm = document.getElementById("addClassForm")
 
-                    addClassForm.addEventListener("submit", () => {
+                    addClassForm.addEventListener("click", () => {
                         let title = $("#addClassTitle").val()
                         let date =  $("#addClassDate").val()
                         let summary = $("#addClassSummary").val()
 
                         const addClassURL = "/addClass/<%= json_course.id %>"
 
-                        let POST = {
+                        const POST = {
                             'addTitle': title,
                             'addDate': date,
                             'addSummary': summary
                         }
-                        let post = JSON.stringify(POST)
+                        const post = JSON.stringify(POST)
                         
                         fetch(addClassURL, {
                             method: 'POST',
@@ -166,8 +183,8 @@
                             if (response.status == 201) {
                                 location.reload()
                             }
-                            if (response.status == 400){
-                                location.reload()
+                            else {
+                                alert("Erro - Não Adicionado")
                             }
                         })
                     })
@@ -178,8 +195,8 @@
 </div>
 
 <script>
-    $("#addCourse").hide();
-    $("#addClass").hide();
+    $("#addCourseBtn").hide();
+    $("#addClassBtn").hide();
 </script>
 
 

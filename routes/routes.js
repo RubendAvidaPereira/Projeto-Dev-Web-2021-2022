@@ -5,6 +5,7 @@ require('dotenv').config(); // Needs .env for the ACCESS_TOKEN_SECRET
 
 const controller = require('../controllers/controller.js'); // Main Controller
 const jwt = require('jsonwebtoken');
+const { render } = require('ejs');
 
 var router = require('express').Router(); // Server router
 
@@ -216,6 +217,7 @@ router.get('/professorClasses/:id_course', authenticate, async (req, res) => {
    const num_courses = response.num_courses;
    const json_course = response.json_course;
    const json_classes = response.json_classes;
+   const json_test = response.json_test;
 
    console.log('GET request - + Info');
 
@@ -225,6 +227,7 @@ router.get('/professorClasses/:id_course', authenticate, async (req, res) => {
       json_courses,
       num_courses,
       json_classes,
+      json_test,
    });
 });
 
@@ -245,6 +248,18 @@ router.get('/professorStudents', authenticate, async (req, res) => {
       num_courses,
       json_students,
       json_enrollements,
+   });
+});
+
+// Add Test Page
+router.get('/professorTest/addTest/:id_course', authenticate, async (req, res) => {
+   const response = await controller.getProfessorTest(req, res);
+   const json_course = response.json_course;
+
+   console.log('GET request - Add Test');
+
+   res.render('professor/add_test', {
+      json_course,
    });
 });
 
@@ -280,9 +295,9 @@ router.post('/editClass/:id_class', authenticate, controller.editClass);
 router.post('/addClass/:id_course', authenticate, controller.addClass);
 
 // Add Course
-router.post('/addCourse/', authenticate, controller.addCourse);
+router.post('/addCourse', authenticate, controller.addCourse);
 
 // Add Test
-router.post('addTest/:id_course', authenticate, controller.addTest);
+router.post('/addTest/:id_course', authenticate, controller.addTest);
 
 module.exports = router;
