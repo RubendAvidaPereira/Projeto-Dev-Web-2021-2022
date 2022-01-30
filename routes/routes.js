@@ -44,15 +44,21 @@ router.get('/', (req, res) => {
    res.render('index');
 });
 
-// About Page
-router.get('/about', (req, res) => {
-   console.log(`GET request - About`);
-   res.render('about');
-});
-
 // =================================================================================================
 // =================================================================================================
 // User needs to be authenticated to use next routes
+
+// About Student
+router.get('/student/about', authenticate, (req, res) => {
+   console.log(`GET request - About Student`);
+   res.render('student/about');
+});
+
+// About Professor
+router.get('/professor/about', authenticate, (req, res) => {
+   console.log(`GET request - About Professor`);
+   res.render('professor/about');
+});
 
 // Student Homepage
 router.get('/studentHomepage', authenticate, async (req, res) => {
