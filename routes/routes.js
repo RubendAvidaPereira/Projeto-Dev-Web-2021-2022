@@ -285,6 +285,7 @@ router.get('/professorTests', authenticate, async (req, res) => {
    });
 });
 
+// Edit Test Page
 router.get('/professorTest/editTest/:id_test', authenticate, async (req, res) => {
    const response = await controller.getTestToEdit(req, res);
    const json_test = response.json_test;
@@ -298,6 +299,7 @@ router.get('/professorTest/editTest/:id_test', authenticate, async (req, res) =>
    });
 });
 
+// Evaluate Test
 router.get('/professorTest/evaluateTest/:id_submission', authenticate, async (req, res) => {
    const response = await controller.getSubmission(req, res);
    const json_submission = response.json_submission;
@@ -305,6 +307,24 @@ router.get('/professorTest/evaluateTest/:id_submission', authenticate, async (re
    console.log('GET request - Evaluate Test');
    res.render('professor/evaluate_test', {
       json_submission,
+   });
+});
+
+// Get Submissions and Evaluations
+router.get('/professorSubmissions', authenticate, async (req, res) => {
+   const response = await controller.getAllSubmissions(req, res);
+   const json_professor = response.json_professor;
+   const json_tests = response.json_tests;
+   const json_courses = response.json_courses;
+   const json_submissions = response.json_submissions;
+
+   console.log('GET request - Get All Submissions');
+
+   res.render('professor/submission_list', {
+      json_professor,
+      json_tests,
+      json_courses,
+      json_submissions,
    });
 });
 

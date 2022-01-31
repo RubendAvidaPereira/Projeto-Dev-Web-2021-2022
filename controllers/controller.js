@@ -1207,3 +1207,68 @@ exports.getAllTests = async (req, res) => {
       return res.status(400).send({ error: err });
    }
 };
+
+exports.getAllSubmissions = async (req, res) => {
+   try {
+      // Get relevant professor data
+      const getProfessor = await professors.findAll({
+         where: {
+            email: req.email,
+         },
+         attributes: {
+            exclude: ['password', 'createdAt', 'updatedAt'],
+         },
+      });
+      const JSON_professor = JSON.stringify(getProfessor);
+      const json_professor = JSON.parse(JSON_professor);
+
+      const getCourses = await courses.findAll({
+         where: {
+            id_professor: json_professor[0].id,
+         },
+      });
+      const JSON_courses = JSON.stringify(getCourses);
+      const json_courses = JSON.parse(JSON_courses);
+      let num_courses = json_courses.length;
+
+      const courseListID = [];
+      for (let i = 0; i < num_courses; i++) {
+         courseListID.push(json_courses[i].id);
+      }
+
+      const getTests = await tests.findAll({
+         where: {
+            id_course: {
+               [Op.or]: courseListID,
+            },
+         },
+      });
+      const JSON_tests = JSON.stringify(getTests);
+      const json_tests = JSON.parse(JSON_tests);
+
+      const testListID = [];
+      for (let i = 0; i < json_tests.length; i++) {
+         testListID.push(json_tests[i].id);
+      }
+
+      const getSubmission = await submissions.findAll({
+         where: {
+            test_id: {
+               [Op.or]: testListID,
+            },
+         },
+      });
+      const JSON_Submissions = JSON.stringify(getSubmission);
+      const json_submissions = JSON.parse(JSON_Submissions);
+      console.log(json_submissions);
+
+      return {
+         json_professor,
+         json_courses,
+         json_tests,
+         json_submissions,
+      };
+   } catch (err) {
+      return res.status(400).send({ error: err });
+   }
+};

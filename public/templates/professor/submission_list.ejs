@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<%- include("../include/professor/professor_head") %>
+
+<!-- Content -->
+
+<body>
+   <%- include("../include/professor/professor_navbar") %>
+
+   <!-- Footer -->
+   <%- include("../include/professor/professor_utils") %>
+   <div class="main">
+      <div class="mt-5 mb-4 container w-100">
+         <div class="card shadow">
+            <div class="card-body statistic w-100">
+               <div class="row mx-3 mt-2">
+                  <h3 class="heading"><strong>Lista de Submissões de Testes dos Alunos</strong></h3>
+               </div>
+               <hr class="mx-3" />
+               <div class="row mx-3 mt-3">
+                  <div class="col-lg-12">
+                     <table class="table table-borderless table-hover">
+                        <thead>
+                           <tr>
+                              <th style="border-right: 4px solid #155b94;"><strong>Nome do Aluno</strong></th>
+                              <th><strong>Disciplina</strong></th>
+                              <th>Avaliação</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                            <% for (let i = 0; i<json_submissions.length;i++) { %>
+                                <tr>
+                                    <td style="border-right: 4px solid #155b94;"><strong><%= json_submissions[i].student_name %></strong></td>
+                                    <td><%= json_submissions[i].course_name %></td>
+                                    <% if (json_submissions[i].test_result < 0) { %>
+                                        <td class="d-flex justify-content-between">
+                                            <i class="bi bi-hourglass text-await"></i>
+                                            <a class="btn btn-primary" href="/professorTest/evaluateTest/<%= json_submissions[i].id %>">Avaliar</a></td>
+                                    <% } else { %>
+                                        <% if (json_submissions[i].test_result <= 10) { %>
+                                            <td class="d-flex justify-content-between text-danger">
+                                                <p><%= json_submissions[i].test_result %></p>
+                                                <a class="btn btn-primary" href="/professorTest/evaluateTest/<%= json_submissions[i].id %>">Avaliar</a></td>
+                                        <% } else { %>
+                                            <td class="d-flex justify-content-between text-success">
+                                                <p><%= json_submissions[i].test_result %></p>
+                                                <a class="btn btn-primary" href="/professorTest/evaluateTest/<%= json_submissions[i].id %>">Avaliar</a></td>
+                                        <% } %>
+                                    <% } %>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</body>
+
+<script>
+   $('#addCourseBtn').hide();
+   $('#addClassBtn').hide();
+</script>
