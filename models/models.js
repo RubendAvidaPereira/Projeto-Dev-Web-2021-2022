@@ -167,7 +167,6 @@ const submissions = database.define('submissions', {
       type: sequelize.TEXT,
       allowNull: true,
    },
-<<<<<<< HEAD
    score1: {
       type: sequelize.INTEGER,
       allowNull: true,
@@ -184,8 +183,6 @@ const submissions = database.define('submissions', {
       type: sequelize.INTEGER,
       allowNull: true,
    },
-=======
->>>>>>> fffc78e7cde51147b6139f4f748d2f9f6f9bfc1d
    student_name: {
       type: sequelize.TEXT,
    },

@@ -53,15 +53,12 @@
                               </div>
                            </div>
                            <div class="row mt-4 d-flex justify-content-end">
-<<<<<<< HEAD
                               <div class="col-lg-8" style="display: none" id="testEdited">
                                  <div class="alert alert-success">Teste editado com Sucesso!</div>
                               </div>
                               <div class="col-lg-8" style="display: none" id="testNotEdited">
                                  <div class="alert alert-warning">Teste não Editado!</div>
                               </div>
-=======
->>>>>>> fffc78e7cde51147b6139f4f748d2f9f6f9bfc1d
                               <div class="col-lg-4 d-flex justify-content-end">
                                  <button
                                     type="button"
@@ -96,7 +93,6 @@
                                              body: post,
                                           }).then((response) => {
                                              if (response.status == 201) {
-<<<<<<< HEAD
                                                 $('#testEdited').fadeIn();
                                                 setTimeout(() => {
                                                    $('#testEdited').fadeOut();
@@ -106,11 +102,6 @@
                                                 setTimeout(() => {
                                                    $('#testNotEdited').fadeOut();
                                                 }, 2000);
-=======
-                                                alert('Teste Alterado');
-                                             } else {
-                                                alert('Not Created');
->>>>>>> fffc78e7cde51147b6139f4f748d2f9f6f9bfc1d
                                              }
                                           });
                                        });

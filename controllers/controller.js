@@ -409,7 +409,6 @@ exports.activeEnrollements = async (req, res) => {
       }
       const JSON_courses = JSON.stringify(course_list);
       const json_courses = JSON.parse(JSON_courses);
-<<<<<<< HEAD
 
       return {
          json_student,
@@ -426,24 +425,6 @@ exports.infoCourse = async (req, res) => {
    const studentID = req.params.id_student;
    const courseID = req.params.id_course;
 
-=======
-
-      return {
-         json_student,
-         json_enrollements,
-         json_courses,
-      };
-   } catch (err) {
-      return res.status(400).send({ error: err });
-   }
-};
-
-// Student +Info Course
-exports.infoCourse = async (req, res) => {
-   const studentID = req.params.id_student;
-   const courseID = req.params.id_course;
-
->>>>>>> fffc78e7cde51147b6139f4f748d2f9f6f9bfc1d
    const testEnrollement = await enrollements.findAll({
       where: {
          id_student: studentID,
@@ -1127,7 +1108,6 @@ exports.editTest = async (req, res) => {
    }
 };
 
-<<<<<<< HEAD
 exports.getSubmission = async (req, res) => {
    try {
       // Get Student Submission
@@ -1227,10 +1207,3 @@ exports.getAllTests = async (req, res) => {
       return res.status(400).send({ error: err });
    }
 };
-=======
-// Get All Tests
-exports.getAllTests = async (req, res) => {};
-
-// Evaluate Tests
-exports.evaluateTest = async (req, res) => {};
->>>>>>> fffc78e7cde51147b6139f4f748d2f9f6f9bfc1d

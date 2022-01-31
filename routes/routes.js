@@ -14,7 +14,6 @@ var router = require('express').Router(); // Server router
 // Middleware to authenticate User
 async function authenticate(req, res, next) {
    const request_token = req.cookies.token;
-<<<<<<< HEAD
 
    if (!request_token) {
       return res.redirect('/');
@@ -24,17 +23,6 @@ async function authenticate(req, res, next) {
       const token = string[0];
       const user = string[1];
 
-=======
-
-   if (!request_token) {
-      return res.redirect('/');
-   }
-   try {
-      const string = request_token.split('|');
-      const token = string[0];
-      const user = string[1];
-
->>>>>>> fffc78e7cde51147b6139f4f748d2f9f6f9bfc1d
       const verify = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET); // Verifica o token em comparação ao secret token
       if (verify) {
          req.email = user;
@@ -282,7 +270,6 @@ router.get('/professorTest/addTest/:id_course', authenticate, async (req, res) =
 });
 
 // Get All Tests
-<<<<<<< HEAD
 router.get('/professorTests', authenticate, async (req, res) => {
    const response = await controller.getAllTests(req, res);
    const json_professor = response.json_professor;
@@ -296,12 +283,6 @@ router.get('/professorTests', authenticate, async (req, res) => {
       json_tests,
       json_courses,
    });
-=======
-router.get('/professorTestArquive', authenticate, async (req, res) => {
-   const response = await controller.getAllTests(req, res);
-
-   console.log('GET request - Get All Tests');
->>>>>>> fffc78e7cde51147b6139f4f748d2f9f6f9bfc1d
 });
 
 router.get('/professorTest/editTest/:id_test', authenticate, async (req, res) => {
@@ -317,7 +298,6 @@ router.get('/professorTest/editTest/:id_test', authenticate, async (req, res) =>
    });
 });
 
-<<<<<<< HEAD
 router.get('/professorTest/evaluateTest/:id_submission', authenticate, async (req, res) => {
    const response = await controller.getSubmission(req, res);
    const json_submission = response.json_submission;
@@ -328,8 +308,6 @@ router.get('/professorTest/evaluateTest/:id_submission', authenticate, async (re
    });
 });
 
-=======
->>>>>>> fffc78e7cde51147b6139f4f748d2f9f6f9bfc1d
 // =================================================================================================
 // =================================================================================================
 // POST routes
@@ -371,10 +349,6 @@ router.post('/addTest/:id_course', authenticate, controller.addTest);
 router.post('/editTest/:id_test', authenticate, controller.editTest);
 
 // Evaluate Test
-<<<<<<< HEAD
 router.post('/evaluateTest/:id_submission', authenticate, controller.evaluateTest);
-=======
-router.post('/evaluateTest/:id_test', authenticate, controller.evaluateTest);
->>>>>>> fffc78e7cde51147b6139f4f748d2f9f6f9bfc1d
 
 module.exports = router;
