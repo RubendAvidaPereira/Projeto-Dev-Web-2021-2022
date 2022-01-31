@@ -23,8 +23,8 @@
    justify-content: start;
    align-items: center;
 
-   margin-left: 7%;
-   margin-bottom: 3%;
+   margin-left: 2%;
+   margin-bottom: 0%;
 
    position: absolute;
    bottom: 0;
@@ -349,3 +349,11 @@ footer a:hover {
 /* Colors */
 
 /* Other Styles */
+
+.goog-logo-link {
+   display: none !important;
+}
+
+.goog-te-gadget {
+   color: #155b94 !important;
+}

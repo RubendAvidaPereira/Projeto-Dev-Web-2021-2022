@@ -44,6 +44,11 @@ router.get('/', (req, res) => {
    res.render('index');
 });
 
+router.get('/about', (req, res) => {
+   console.log('GET reques - About Page');
+   res.render('about');
+});
+
 // =================================================================================================
 // =================================================================================================
 // User needs to be authenticated to use next routes
@@ -325,6 +330,17 @@ router.get('/professorSubmissions', authenticate, async (req, res) => {
       json_tests,
       json_courses,
       json_submissions,
+   });
+});
+
+router.get('/professorProfile', authenticate, async (req, res) => {
+   const response = await controller.getProfessorProfile(req, res);
+   const json_professor = response.json_professor;
+
+   console.log('GET request - Get Professor Profile');
+
+   res.render('professor/professor_profile', {
+      json_professor,
    });
 });
 
