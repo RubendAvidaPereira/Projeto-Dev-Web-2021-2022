@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<%- include("../include/professor/professor_head") %>
+
+<!-- Content -->
+
+<body>
+   <%- include("../include/professor/professor_navbar") %>
+
+   <!-- Footer -->
+   <%- include("../include/professor/professor_utils") %>
+   <div class="main">
+      <div class="mt-5 mb-4 container w-100">
+         <div class="card shadow">
+            <div class="card-body statistic w-100">
+               <div class="row mt-1 mb-3">
+                  <div class="col-lg-12">
+                     <h3 class="heading"><strong>Lista de Testes</strong></h3>
+                  </div>
+               </div>
+               <ul class="list-group list-group-flush">
+                  <li class="list-group-item mb-2">
+                     <div class="col-lg-12 d-flex justify-content-between">
+                        <h4><strong>Teste de</strong></h4>
+                        <h4><strong>Editar</strong></h4>
+                     </div>
+                  </li>
+                  <% for ( let i = 0; i < json_courses.length; i++ ) { %> <% for (let j = 0; j <
+                  json_tests.length; j++) { %> <% if (json_courses[i].id == json_tests[j].id_course)
+                  { %>
+                  <li class="list-group-item border-0">
+                     <div class="col-lg-12 d-flex justify-content-between">
+                        <h4><%= json_courses[i].type %></h4>
+                        <a
+                           class="btn btn-primary"
+                           href="/professorTest/editTest/<%= json_tests[j].id %>"
+                           ><h4><i class="bi bi-pencil"></i></h4
+                        ></a>
+                     </div>
+                  </li>
+                  <% } %> <% } %> <% } %>
+               </ul>
+            </div>
+         </div>
+      </div>
+   </div>
+</body>
+<script>
+   $('#addCourseBtn').hide();
+   $('#addClassBtn').hide();
+</script>

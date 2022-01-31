@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<%- include("../include/professor/professor_head") %>
+
+<!-- Content -->
+
+<body>
+   <%- include("../include/professor/professor_navbar") %>
+
+   <div class="main">
+      <div class="container mt-5 mb-4 w-100">
+         <div class="card shadow">
+            <div class="card-body statistic w-100">
+               <div class="row mt-2 mx-3">
+                  <h3 class="heading">
+                     <strong> Corrigir Teste de <%= json_submission.course_name %></strong>
+                  </h3>
+               </div>
+               <div class="row mt-2 mx-3">
+                  <ul class="list-group list-group-flush">
+                     <li class="list-group-item border-0 h5">
+                        <strong><%= json_submission.student_name %></strong>
+                     </li>
+                     <li class="list-group-item h5"><%= json_submission.student_email %></li>
+                  </ul>
+               </div>
+               <hr class="mx-3" />
+
+               <!-- Answer 1 -->
+               <div class="row mx-3">
+                  <div class="col-lg-9">
+                     <label for="question1"><strong>Resposta à Questão 1</strong></label>
+                     <textarea class="form-control mt-2" disabled id="question1" rows="4">
+<%= json_submission.answer1 %></textarea
+                     >
+                  </div>
+                  <div class="col-lg-3">
+                     <label for="score1"
+                        ><strong> Pontuação <small>(0 a 5)</small></strong></label
+                     >
+                     <input type="number" id="score1" min="0" max="5" class="form-control mt-5" />
+                  </div>
+               </div>
+               <!-- Answer 2 -->
+               <div class="row mt-3 mx-3">
+                  <div class="col-lg-9">
+                     <label for="question2"><strong>Resposta à Questão 2</strong></label>
+                     <textarea class="form-control mt-2" disabled id="question2" rows="4">
+<%= json_submission.answer2 %></textarea
+                     >
+                  </div>
+                  <div class="col-lg-3">
+                     <label for="score2"
+                        ><strong> Pontuação <small>(0 a 5)</small></strong></label
+                     >
+                     <input type="number" id="score2" min="0" max="5" class="form-control mt-5" />
+                  </div>
+               </div>
+               <!-- Answer 3 -->
+               <div class="row mt-3 mx-3">
+                  <div class="col-lg-9">
+                     <label for="question3"><strong>Resposta à Questão 3</strong></label>
+                     <textarea class="form-control mt-2" disabled id="question3" rows="4">
+<%= json_submission.answer3 %></textarea
+                     >
+                  </div>
+                  <div class="col-lg-3">
+                     <label for="score3"
+                        ><strong> Pontuação <small>(0 a 5)</small></strong></label
+                     >
+                     <input type="number" id="score3" min="0" max="5" class="form-control mt-5" />
+                  </div>
+               </div>
+               <!-- Answer 4 -->
+               <div class="row mt-3 mx-3">
+                  <div class="col-lg-9">
+                     <label for="question4"><strong>Resposta à Questão 4</strong></label>
+                     <textarea class="form-control mt-2" disabled id="question4" rows="4">
+<%= json_submission.answer4 %></textarea
+                     >
+                  </div>
+                  <div class="col-lg-3">
+                     <label for="score4"
+                        ><strong> Pontuação <small>(0 a 5)</small></strong></label
+                     >
+                     <input type="number" id="score4" min="0" max="5" class="form-control mt-5" />
+                  </div>
+               </div>
+               <div class="row mt-4 mb-3 mx-3">
+                  <div class="col-lg-9">
+                     <div class="alert alert-success" style="display: none" id="testEvaluated">
+                        A correção foi submetida com Sucesso!
+                     </div>
+                     <div class="alert alert-warning" style="display: none" id="testNotEvaluated">
+                        A correção foi submetida com Sucesso!
+                     </div>
+                  </div>
+                  <div class="col-lg-3 d-flex justify-content-end">
+                     <button type="button" class="btn btn-lg btn-primary" id="sendEvaluation">
+                        Submeter Correção
+                     </button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</body>
+
+<script>
+   document.getElementById('sendEvaluation').addEventListener('click', () => {
+      let score1 = $('#score1').val();
+      let score2 = $('#score2').val();
+      let score3 = $('#score3').val();
+      let score4 = $('#score4').val();
+
+      const postData = {
+         score1: score1,
+         score2: score2,
+         score3: score3,
+         score4: score4,
+      };
+      const post = JSON.stringify(postData);
+
+      fetch('/evaluateTest/<%= json_submission.id %>', {
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+         },
+         body: post,
+      }).then((response) => {
+         if (response.status == 201) {
+            $('#testEvaluated').fadeIn();
+            setTimeout(() => {
+               $('#testEvaluated').fadeOut();
+            }, 2000);
+         } else if (response.status == 400) {
+            $('#testNotEvaluated').fadeIn();
+            setTimeout(() => {
+               $('#testNotEvaluated').fadeOut();
+            }, 2000);
+         }
+      });
+   });
+</script>

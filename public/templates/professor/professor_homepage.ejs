@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<%- include("../include/professor/professor_head") %>
+
+    <!-- Content -->
+
+    <body>
+        <%- include("../include/professor/professor_navbar") %>
+
+        <!-- Footer -->
+        <%- include("../include/professor/professor_utils") %>
+            <div class="main">
+                <div class="container d-flex justify-content-between">
+                    <div class="row w-100">
+                        <div class="col-lg-9">
+                            <h4 class="text-start heading mx-3 mt-3"><strong>Bem-vindo, <%= json_professor[0].name %></strong></h4>
+                            <!-- Main -->
+                            <div class="row mt-4 mx-0 mb-4 w-100">
+                                <div class="col-lg-4">
+                                    <div class="card shadow">
+                                        <div class="card-body statistic w-100">
+                                            <h6><strong>Número de Alunos Inscritos</strong></h5>
+                                            <h4 style="margin-top: 3%;">
+                                                <strong><%= num_students %></strong>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="card shadow">
+                                        <div class="card-body statistic w-100">
+                                            <h6><strong>Número de Disciplinas</strong></h5>
+                                            <h4 style="margin-top: 3%;">
+                                                <strong><%= num_courses %></strong>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="card shadow">
+                                        <div class="card-body statistic w-100">
+                                            <h6><strong>Número de Testes Submetidos</strong></h5>
+                                            <h4 style="margin-top: 3%;">
+                                                <strong><%= num_submissions %></strong>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mx-0 mt-2 mb-2">
+                                <div class="col-lg-12">
+                                    <!-- Add Course Card -->
+                                    <div class="card shadow" id="addCourseCard" style="display: none;">
+                                        <div class="card-body statistic w-100">
+                                            <h4 class="heading">Adicionar Disciplina</h4>
+                                            <hr>
+                                            <form>
+                                                <div class="row mx-3">
+                                                    <div class="col-lg-12">
+                                                        <div class="alert alert-success" style="display: none;" id="courseAdded">
+                                                            Disciplina Adicionada com Sucesso
+                                                        </div>
+                                                        <div class="alert alert-danger" style="display: none;" id="courseNotAdded">
+                                                            Disciplina não foi Adicionada
+                                                        </div>
+                                                        <label for="addCourseName"><strong>Nome da Disciplina</strong></label>
+                                                        <input type="text" id="addCourseName" class="form-control mt-2">
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex justify-content-end mt-4 mx-3">
+                                                    <button type="button" id="addCourseForm" class="btn btn-primary mx-2 mr-3">Adicionar Disciplina</button>
+                                                </div>
+                                            </form>
+                                            <script>
+                                                document.getElementById("addCourseForm").addEventListener("click", () => {
+                                                    const addCourseURL = "/addCourse"
+                                                    
+                                                    const POST = {
+                                                        'addName': $("#addCourseName").val(),
+                                                        'professorId': "<%= json_professor[0].id %>" 
+                                                    }
+                                                    const post = JSON.stringify(POST)
+                                                    console.log(post)
+                                                    
+                                                    fetch(addCourseURL, {
+                                                        method: 'POST',
+                                                        headers: {
+                                                            'Content-Type': 'application/json',
+                                                        },
+                                                        body: post,
+                                                    }).then((response) => {
+                                                        if (response.status == 201) {
+                                                            $("#courseAdded").fadeIn()
+                                                            setTimeout(() => {
+                                                                $("#courseAdded").fadeOut()
+                                                            }, 2000)
+                                                        }
+                                                        if (response.status == 400){
+                                                            $("#courseNotAdded").fadeIn()
+                                                            setTimeout(() => {
+                                                                $("#courseNotAdded").fadeOut()
+                                                            }, 2000)
+                                                        }
+                                                    })
+                                                })
+                                            </script>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mx-0 mt-2 mb-4">
+                                <div class="col-lg-12">
+                                    <div class="card shadow" id="addClassCard" style="display: none;">
+                                        <div class="card-body statistic w-100">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <h4 class="heading">Adicionar Aula</h4>
+                                                    <hr>
+                                                    <!-- Add Class Card -->
+                                                    <div class="col-lg-12">
+                                                        <form id="addClassForm">
+                                                            <div class="row mx-3" id="ClassAdded">
+                                                                <div class="alert alert-success" style="display: none;" id="classAdded">
+                                                                    Aula Adicionada com Sucesso
+                                                                </div>
+                                                                <div class="alert alert-warning" style="display: none;" id="classNotAdded">
+                                                                    Aula não Adicionada
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mx-3">
+                                                                <div class="col-lg-12">
+                                                                    <label for="addClassTitle"><strong>Título</strong></label>
+                                                                    <input type="text" id="addClassTitle" class="form-control mt-2">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mx-3 mt-3">
+                                                                <div class="col-lg-6">
+                                                                    <label for="addClassDate"><strong>Data</strong></label>
+                                                                    <input type="date" id="addClassDate" class="form-control mt-2">
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <label for="selectCourse"><strong>Selecionar Disciplina</strong></label>
+                                                                    <select class="form-select mt-2" id="selectCourse">
+                                                                        <% for (let i=0; i<num_courses;i++) { %>
+                                                                            <option value="<%= json_courses[i].id %>"><%= json_courses[i].type %></option>
+                                                                        <% } %>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mx-3 mt-3">
+                                                                <div class="col-lg-12">
+                                                                    <label for="addClassSummary"><strong>Sumário</strong></label>
+                                                                    <textarea rows="5" class="form-control mt-2" id="addClassSummary"></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="d-flex justify-content-end mt-4 mx-3">
+                                                                <button type="button" iD="addClassButton" class="btn btn-primary mx-2 mr-3">Adicionar Aula</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+
+                                                    <script>
+                                                        document.getElementById("addClassButton").addEventListener("click", () => {
+                                                            let title = $("#addClassTitle").val()
+                                                            let date =  $("#addClassDate").val()
+                                                            let summary = $("#addClassSummary").val()
+                                                    
+                                                            console.log($("#selectCourse").val())
+
+                                                            const addClassURL = "/addClass/" + $("#selectCourse").val()
+
+                                                            let POST = {
+                                                                'addTitle': title,
+                                                                'addDate': date,
+                                                                'addSummary': summary
+                                                            }
+                                                            let post = JSON.stringify(POST)
+                                                            
+                                                            fetch(addClassURL, {
+                                                                method: 'POST',
+                                                                headers: {
+                                                                    'Content-Type': 'application/json',
+                                                                },
+                                                                body: post,
+                                                            }).then((response) => {
+                                                                if (response.status == 201) {
+                                                                    $("#classAdded").fadeIn()
+                                                                    setTimeout(()=> {
+                                                                        $("#classAdded").fadeOut()
+                                                                    }, 2000)
+                                                                }
+                                                                if (response.status == 400){
+                                                                    $("#classNotAdded").fadeIn()
+                                                                    setTimeout(()=> {
+                                                                        $("#classNotAdded").fadeOut()
+                                                                    }, 2000)
+                                                                }
+                                                            })
+                                                        })
+                                                    </script>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Side -->
+                        <div class="col-lg-3">
+                            <h4 class="text-center heading mx-3 mt-3"><strong>Importante</strong><span><small> (por corrigir)</small></span></h4>
+                            <% for (let i=0; i < num_submissions; i++) { %>
+                                <% if (json_submissions[i].test_result <= 0) { %>
+                                    <div class="card shadow mt-4">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <h5>Teste de <%= json_submissions[i].student_name %></h5>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <p>Disciplina: <%= json_submissions[i].course_name %></p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-12 d-flex justify-content-end">
+                                                    <a class="btn btn-primary" href="/professorTest/evaluateTest/<%= json_submissions[i].id %>">Corrigir</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% } %>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </body>

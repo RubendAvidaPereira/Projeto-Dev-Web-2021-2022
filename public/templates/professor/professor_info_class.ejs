@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<%- include("../include/professor/professor_head") %>
+
+<!-- Content -->
+
+<body>
+    
+    <%- include("../include/professor/professor_navbar") %>
+    
+    <!-- Footer -->
+    <%- include("../include/professor/professor_utils") %>
+    
+    <div class="main">
+        <div class="container w-100">
+            <div class="row d-flex justify-content-start mx-3 mt-4">
+                <% if (!json_test) { %>
+                    <div class="col-lg-6">
+                        <h3 class="heading"><strong><%= json_course.type %></strong></h3>
+                    </div>
+                    <div class="col-lg-3 d-flex justify-content-end align-items-center">
+                        <a class="btn btn-lg btn-primary" 
+                            type="button" 
+                            style="border-radius: 10%;" 
+                            href="/professorTest/addTest/<%= json_course.id %>"><i class="bi bi-plus-lg"></i> Adicionar Teste</a>
+                    </div>
+                <% } else {  %>
+                    <div class="col-lg-6">
+                        <h3 class="heading"><strong><%= json_course.type %></strong></h3>
+                    </div>
+                    <div class="col-lg-3 d-flex justify-content-end align-items-center">
+                        <a class="btn btn-lg btn-primary" 
+                            type="button" 
+                            style="border-radius: 10%;" href="/professorTest/editTest/<%= json_test.id %>"><i class="bi bi-pencil"></i> Editar Teste</a>
+                    </div>
+                <% } %>
+                <div class="col-lg-3 d-flex justify-content-end align-items-center">
+                    <button class="btn btn-lg btn-primary" 
+                    type="button" 
+                    style="border-radius: 10%;" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#addClass<%= json_course.id %>"><i class="bi bi-plus-lg"></i> Adicionar Aula</button>
+                </div>
+            </div>
+         </div>
+
+         <div class="row mt-3 w-100">
+             <% for(let i=0;i<json_classes.length; i++) { %>
+                <div class="col-lg-12 mt-2 d-flex justify-content-center">
+                    <div class="card shadow mt-2 mb-2 mx-4 w-100">
+                        <div class="card-body statistic w-100">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <h3 class="heading"><strong><%= json_classes[i].title %></strong></h3> 
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="alert alert-sm alert-success" id="editSuccess" style="display: none;" role="alert">
+                                        A Aula foi editada com Sucesso
+                                    </div>
+                                    <div class="alert alert-sm alert-danger" id="editFailed" style="display: none;" role="alert">
+                                        Não foi possível editar a Aula
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <label for="summary<%= json_classes[i].id %>"><h5><strong>Sumário</strong></h5></label>
+                                    <textarea id="summary<%= json_classes[i].id %>" class="form-control mt-2" rows="4" readonly><%= json_classes[i].summary %></textarea>
+                                </div>
+                                <div class="col-lg-4">
+                                    <ul class="list-group list-group-flush mt-1">
+                                        <li class="list-group-item text-center mt-1 mb-1 border-0"><strong>Data da Publicação:</strong> <%= json_classes[i].class_date %></li>
+                                        <li class="list-group-item text-end mt-1 border-0"><a class="btn btn-primary w-100" href="#" id="editClass<%= json_classes[i].id %>">Editar Aula <i class="bi bi-pencil"></i></a></li>
+                                        <li class="list-group-item text-end mt-1 border-0"><a class="btn btn-primary w-100" href="#" id="submitClass<%= json_classes[i].id %>">Submeter Edição <i class="bi bi-pencil-square"></i></a></li>
+                                        <script>
+
+                                            $("#submitClass<%= json_classes[i].id %>").hide()
+                                            document.getElementById("editClass<%= json_classes[i].id %>").addEventListener("click", () => {
+                                                $("#summary<%= json_classes[i].id %>").removeAttr("readonly")
+                                                setTimeout(() => {
+                                                    $("#submitClass<%= json_classes[i].id %>").fadeIn()
+                                                }, 1000)
+                                            })
+
+                                            document.getElementById("submitClass<%= json_classes[i].id %>").addEventListener("click", () => {
+                                                const postURL = "/editClass/<%= json_classes[i].id %>"
+                                                const postData = $("#summary<%= json_classes[i].id %>").val()
+
+                                                let POST = {
+                                                    'postData': postData
+                                                }
+                                                let post = JSON.stringify(POST)
+                                                
+                                                console.log(post)
+                                                fetch(postURL, {
+                                                    method: 'POST',
+                                                    headers: {
+                                                        'Content-Type': 'application/json',
+                                                    },
+                                                    body: post,
+                                                }).then((response) => {
+                                                    if (response.status == 201) {
+                                                        $("#editSuccess").fadeIn()
+                                                        setTimeout(() => {
+                                                            $("#editSuccess").fadeOut()
+                                                        }, 1500)
+                                                    }
+                                                    if (response.status == 400){
+                                                        $("#editFailed").fadeIn()
+                                                        setTimeout(() => {
+                                                            $("#editFailed").fadeOut()
+                                                        }, 1500)
+                                                    }
+                                                })
+                                            })
+                                        </script>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+             <% } %>
+         </div>
+      </div>
+</div>
+
+<!-- Add Class Modal -->
+<div class="modal fade" id="addClass<%= json_course.id %>" tabindex="-1" aria-labelledby="addClassLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title heading" id="exampleModalLabel">Adicionar Aula</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row mx-3 mb-2">
+                        <div class="alert alert-warning" id="classNotAdded">
+                            Aula não Adicionada
+                        </div>
+                    </div>
+                    <div class="row mx-3">
+                        <div class="col-lg-6">
+                            <label for="addClassTitle"><strong>Título</strong></label>
+                            <input type="text" id="addClassTitle" class="form-control mt-2">
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="addClassDate"><strong>Data</strong></label>
+                            <input type="date" id="addClassDate" class="form-control mt-2">
+                        </div>
+                    </div>
+                    <div class="row mx-3 mt-3">
+                        <div class="col-lg-12">
+                            <label for="addClassSummary"><strong>Sumário</strong></label>
+                            <textarea rows="5" class="form-control mt-2" id="addClassSummary"></textarea>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end mt-4 mx-3">
+                        <button type="button" id="addClassForm" class="btn btn-lg btn-primary mx-2 mr-3">Adicionar Aula</button>
+                    </div>
+                </form>
+                <script>
+                    const addClassForm = document.getElementById("addClassForm")
+
+                    addClassForm.addEventListener("click", () => {
+                        let title = $("#addClassTitle").val()
+                        let date =  $("#addClassDate").val()
+                        let summary = $("#addClassSummary").val()
+
+                        const addClassURL = "/addClass/<%= json_course.id %>"
+
+                        const POST = {
+                            'addTitle': title,
+                            'addDate': date,
+                            'addSummary': summary
+                        }
+                        const post = JSON.stringify(POST)
+                        
+                        fetch(addClassURL, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: post,
+                        }).then((response) => {
+                            if (response.status == 201) {
+                                location.reload()
+                            }
+                            else {
+                                $("#classNotAdded").fadeIn()
+                                setTimeout(()=> {
+                                    $("#classNotAdded").fadeOut()
+                                }, 2000)
+                            }
+                        })
+                    })
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#addCourseBtn").hide();
+    $("#addClassBtn").hide();
+</script>
+
+
+</body>

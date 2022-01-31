@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<%- include("../include/professor/professor_head") %>
+
+<!-- Content -->
+
+<body>
+   <%- include("../include/professor/professor_navbar") %>
+
+   <div class="main">
+      <div class="container w-100">
+         <div class="row d-flex justify-content-start mx-3 mt-5 mb-5">
+            <div class="col-lg-12">
+               <div class="card shadow">
+                  <div class="card-body statistic w-100">
+                     <div class="row mx-2">
+                        <h3 class="heading mt-1">Teste de <%= json_course.type %></h3>
+                     </div>
+                     <hr />
+                     <div class="row mx-2">
+                        <form>
+                           <div class="row">
+                              <div class="col-lg-12">
+                                 <label for="question1"><strong>Questão 1</strong></label>
+                                 <textarea
+                                    id="question1"
+                                    rows="4"
+                                    class="form-control mt-2"
+                                 ></textarea>
+                              </div>
+                           </div>
+                           <div class="row mt-4">
+                              <div class="col-lg-12">
+                                 <label for="question2"><strong>Questão 2</strong></label>
+                                 <textarea
+                                    id="question2"
+                                    rows="4"
+                                    class="form-control mt-2"
+                                 ></textarea>
+                              </div>
+                           </div>
+                           <div class="row mt-4">
+                              <div class="col-lg-12">
+                                 <label for="question3"><strong>Questão 3</strong></label>
+                                 <textarea
+                                    id="question3"
+                                    rows="4"
+                                    class="form-control mt-2"
+                                 ></textarea>
+                              </div>
+                           </div>
+                           <div class="row mt-4">
+                              <div class="col-lg-12">
+                                 <label for="question4"><strong>Questão 4</strong></label>
+                                 <textarea
+                                    id="question4"
+                                    rows="4"
+                                    class="form-control mt-2"
+                                 ></textarea>
+                              </div>
+                           </div>
+                           <div class="row mt-4 d-flex justify-content-end">
+                              <div class="col-lg-8" style="display: none" id="testAdded">
+                                 <div class="alert alert-success">Teste Adicionado com Sucesso</div>
+                              </div>
+                              <div class="col-lg-8" style="display: none" id="testNotAdded">
+                                 <div class="alert alert-warning">Teste Não foi Criado</div>
+                              </div>
+                              <div class="col-lg-4 d-flex justify-content-end">
+                                 <button
+                                    type="button"
+                                    id="submitTest"
+                                    class="btn btn-lg btn-primary"
+                                 >
+                                    Criar Teste
+                                 </button>
+                                 <script>
+                                    document
+                                       .getElementById('submitTest')
+                                       .addEventListener('click', () => {
+                                          let question1 = $('#question1').val();
+                                          let question2 = $('#question2').val();
+                                          let question3 = $('#question3').val();
+                                          let question4 = $('#question4').val();
+
+                                          const postData = {
+                                             question1: question1,
+                                             question2: question2,
+                                             question3: question3,
+                                             question4: question4,
+                                          };
+
+                                          let post = JSON.stringify(postData);
+
+                                          fetch('/addTest/<%= json_course.id %>', {
+                                             method: 'POST',
+                                             headers: {
+                                                'Content-Type': 'application/json',
+                                             },
+                                             body: post,
+                                          }).then((response) => {
+                                             if (response.status == 201) {
+                                                $('#testAdded').fadeIn();
+                                                setTimeout(() => {
+                                                   $('#testAdded').fadeOut();
+                                                }, 2000);
+                                             } else {
+                                                $('#testNotAdded').fadeIn();
+                                                setTimeout(() => {
+                                                   $('#testNotAdded').fadeOut();
+                                                }, 2000);
+                                             }
+                                          });
+                                       });
+                                 </script>
+                              </div>
+                           </div>
+                        </form>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</body>
