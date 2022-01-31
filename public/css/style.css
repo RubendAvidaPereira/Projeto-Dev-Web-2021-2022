@@ -23,7 +23,11 @@
    justify-content: start;
    align-items: center;
 
+<<<<<<< HEAD
    margin-left: 7%;
+=======
+   margin-left: 9%;
+>>>>>>> fffc78e7cde51147b6139f4f748d2f9f6f9bfc1d
    margin-bottom: 3%;
 
    position: absolute;
@@ -39,7 +43,11 @@
 .sidenav a {
    /* Position and Size */
    margin-top: 10%;
+<<<<<<< HEAD
    margin-left: 7%;
+=======
+   margin-left: 11%;
+>>>>>>> fffc78e7cde51147b6139f4f748d2f9f6f9bfc1d
    margin-bottom: 15%;
    text-decoration: none;
    font-size: 1.25rem;
@@ -70,7 +78,11 @@
    margin: auto;
 
    /* Other Styles */
+<<<<<<< HEAD
    font-size: 1.95em !important;
+=======
+   font-size: 1.75em !important;
+>>>>>>> fffc78e7cde51147b6139f4f748d2f9f6f9bfc1d
 }
 
 /* ============================================================================================= */
@@ -121,9 +133,12 @@ body {
 .heading {
    /* colors */
    color: #0c2d48;
+<<<<<<< HEAD
 }
 .text-await {
    color: #175b92 !important;
+=======
+>>>>>>> fffc78e7cde51147b6139f4f748d2f9f6f9bfc1d
 }
 
 /* ============================================================================================= */

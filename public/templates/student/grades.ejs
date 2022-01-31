@@ -33,8 +33,13 @@
                                 <tr style="height: 3.5rem !important;">
                                     <td><%= json_submission[i].course_name %></td>
                                     <% if (json_submission[i].test_result < 0 || json_submission[i].test_result == null) { %>
+<<<<<<< HEAD
                                         <td class="text-center text-await">Ainda não Corrigido</td>
                                         <td class="text-center text-await"><i class="bi bi-hourglass-split"></i></td>
+=======
+                                        <td class="text-center">Ainda não Corrigido</td>
+                                        <td class="text-center"><i class="bi bi-hourglass-split"></i></td>
+>>>>>>> fffc78e7cde51147b6139f4f748d2f9f6f9bfc1d
                                     <% } else { %>
                                         <td class="text-center"><%= json_submission[i].test_result %></td>
                                         <% if (json_submission[i].test_result > 10) { %>
