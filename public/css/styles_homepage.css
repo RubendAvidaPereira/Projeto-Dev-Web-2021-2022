@@ -94,6 +94,7 @@
 body {
    background-color: #b1d4e0 !important;
    height: 100% !important;
+   top: 0px !important;
    min-height: 100%;
    overflow-x: hidden;
 }
@@ -289,4 +290,21 @@ body {
 
 .goog-te-gadget {
    color: #155b94 !important;
+}
+
+.goog-te-combo {
+   margin-top: 19% !important;
+   width: 95% !important;
+   margin-left: 19% !important;
+   height: 100% !important;
+   background-color: #d0edf7;
+   border-radius: 5px;
+   border: 0;
+}
+
+.goog-te-combo:hover {
+   background-color: #b1d4e0;
+}
+.goog-te-banner-frame.skiptranslate {
+   display: none !important;
 }
