@@ -5,10 +5,21 @@ const express = require('express'); // Load da framework Express
 const cors = require('cors'); // Load da module cors, necessário para o controlo dos headers e cross origin resource.
 const path = require('path'); // Load do module path
 const ejs = require('ejs'); // Load do module ejs
+const https = require('https'); // Load do module https
+const fs = require('fs');
 const cookie_parser = require('cookie-parser'); // Load do module cookie-parser, necessário para controlo de autentificacao
 const routes = require('./routes/routes.js'); // Especificar o ficheiro das rotas
 
 const app = express();
+
+// HTTPS Secure Certificate and Key
+const sslServer = https.createServer(
+   {
+      key: fs.readFileSync('cert/key.pem'),
+      cert: fs.readFileSync('cert/certificate.pem'),
+   },
+   app
+);
 
 // ===========================================================================================================================
 // ===========================================================================================================================
@@ -41,6 +52,11 @@ app.use('/', routes); // Application Routes
 // ===========================================================================================================================
 // Server Listening on Port 8080
 const PORT = 8080; // Porta onde o servidor vai escutar os pedidos e executar os requests
-app.listen(PORT, () => {
+sslServer.listen(PORT, () => {
    console.log(`Server Running - PORT ${PORT}`);
+});
+
+// Use HTTPS
+app.use((req, res, next) => {
+   req.secure ? next() : res.redirect('https://' + req.headers.host + req.url);
 });
