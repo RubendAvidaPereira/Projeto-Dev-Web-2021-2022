@@ -4,6 +4,82 @@
 <!-- Content -->
 <body>
    <%- include("../include/student/student_navbar") %>
+   <div class="main">
+      <div class="container w-100">
+         <div class="card shadow mt-4 mb-4">
+            <div class="card-body statistic w-100">
+               <div class="row mx-1 mt-2 mb-1">
+                  <div class="col-lg-12">
+                     <h2 class="heading"><strong>Sobre</strong></h2>
+                  </div>
+               </div>
+               <div class="row mt-3">
+                  <div class="col-lg-11 mx-4">
+                     <h5>
+                        <strong><i class="bi bi-house"></i> &nbsp;Página Inicial</strong>
+                     </h5>
+                     <p style="text-align: justify">
+                        Apresenta uma visão global pertinente ao aluno com a conta iniciada,
+                        nomeadamente uma barra de procura que permite procurar disciplinas, o número
+                        de disciplinas em que o aluno está inscrito e a quantidade de aulas
+                        disponíveis para o aluno consultar. À direita tem também um botão que
+                        permite o aluno ver o seu próprio perfil e fazer logout e por baixo existe
+                        uma série de paineis onde são mostradas todas as disciplinas que o aluno
+                        está inscrito. Dentro de cada painel existe um botão "Ver +" que mostra
+                        informação referente à disciplina sem mudar para uma outra página (SPA -
+                        Single Page Application).
+                     </p>
+                     <br />
+                     <h5>
+                        <strong><i class="bi bi-list"></i> &nbsp;Todas as Disciplinas</strong>
+                     </h5>
+                     <p style="text-align: justify">
+                        Apresenta todas as disciplinas criadas na plataforma de modo a que o aluno
+                        com a conta iniciada as possa verificar de modo a inscrever-se nas mesmas.
+                        Cada disciplina tem um botão à direita que permite o aluno inscrever-se na
+                        disciplina na qual o botão se econtra.
+                     </p>
+                     <br />
+                     <h5>
+                        <strong><i class="bi bi-list-check"></i> &nbsp;Disciplinas Inscrito</strong>
+                     </h5>
+                     <p style="text-align: justify">
+                        Apresenta todas as disciplinas em que o aluno com a conta iniciada está
+                        inscrito. Cada disciplina tem um botão à direita que permite o aluno ir para
+                        a página específica da discipina selecionada e verificar elementos da
+                        disciplina.
+                     </p>
+                     <br />
+                     <h5>
+                        <strong><i class="bi bi-archive"></i> &nbsp;Disciplina</strong>
+                     </h5>
+                     <p style="text-align: justify">
+                        Após clicar em "Ver Disciplina", o aluno é levado para uma página
+                        responsável pela disciplina que escolheu, onde pode ver o nome e o email do
+                        professor que leciona a disciplina, as várias aulas públicadas até ao
+                        presente e o teste da disciplina. No caso de o aluno carregar em "Abrir
+                        Aula", será demonstrado o sumário e a data da aula selecionada na mesma
+                        página (SPA - Single Page Application).
+                     </p>
+                     <br />
+                     <h5>
+                        <strong><i class="bi bi-table"></i> &nbsp;Pauta</strong>
+                     </h5>
+                     <p style="text-align: justify">
+                        Apresenta uma tabela com as médias atuais do aluno a cada discipina que este
+                        está inscrito e o seu estado de aprovação. No caso de ainda não ter sido
+                        realizada a correção do teste, irá aparecer "Ainda não Corrigido" na coluna
+                        "Resultado". A coluna "Aprovação" irá apresentar "Aprovado", "Reprovado" ou
+                        um icon de espera caso este tenha sido aprovado, reprovado ou ainda não
+                        exista a decisão respetivamente.
+                     </p>
+                     <br />
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
 </body>
 
 <script>
